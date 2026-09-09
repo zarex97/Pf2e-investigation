@@ -96,9 +96,17 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .badge{font-family:var(--f-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;
   color:var(--ink-2);border:1px solid var(--line-strong);border-radius:4px;padding:1px 5px}
 .badge.k{border-color:var(--accent);color:var(--accent)}
-.spark{display:flex;align-items:flex-end;gap:3px;height:20px;flex:none}
-.spark i{width:4px;background:var(--accent);border-radius:1px;display:block;opacity:.85}
-.spark i.cost{background:var(--ink-3);opacity:.5}
+.pf{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:11px;max-width:352px}
+.pf .c{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.pf .v{font-family:var(--f-mono);font-size:11.5px;font-weight:500;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;line-height:1}
+.pf .b{width:100%;height:38px;background:var(--track);border-radius:2px;
+  display:flex;align-items:flex-end;overflow:hidden}
+.pf .b i{display:block;width:100%;background:var(--accent);border-radius:2px 2px 0 0}
+.pf .c.cost .v{color:var(--ink-3)}
+.pf .c.cost .b i{background:var(--ink-3);opacity:.5}
+.pf .l{font-family:var(--f-mono);font-size:9px;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--ink-3);line-height:1;white-space:nowrap}
 .star{flex:none;width:40px;height:40px;display:grid;place-items:center;
   border-radius:999px;color:var(--ink-3);align-self:start}
 .star[aria-pressed="true"]{color:var(--brass);background:var(--brass-soft)}
@@ -268,14 +276,14 @@ table.cmpt li{margin-bottom:4px}
 "use strict";
 
 var AXES=[
- {k:"dmg", n:"Damage",        d:"How reliably it removes enemy hit points."},
- {k:"surv",n:"Survivability", d:"Hit points, armour, saves, and staying upright."},
- {k:"sup", n:"Support",       d:"Healing, buffing, and handing allies actions."},
- {k:"ctrl",n:"Control",       d:"Shaping the battlefield and stapling conditions on foes."},
- {k:"util",n:"Utility",       d:"Skills and answers to problems outside of combat."},
- {k:"vers",n:"Versatility",   d:"How much the class can change between days or builds."},
- {k:"cplx",n:"Complexity",    d:"How hard it is to play well.", cost:true},
- {k:"res", n:"Bookkeeping",   d:"Daily prep and limited resources to track.", cost:true}
+ {k:"dmg", n:"Damage",        ab:"Dmg", d:"How reliably it removes enemy hit points."},
+ {k:"surv",n:"Survivability", ab:"Surv", d:"Hit points, armour, saves, and staying upright."},
+ {k:"sup", n:"Support",       ab:"Supp", d:"Healing, buffing, and handing allies actions."},
+ {k:"ctrl",n:"Control",       ab:"Ctrl", d:"Shaping the battlefield and stapling conditions on foes."},
+ {k:"util",n:"Utility",       ab:"Util", d:"Skills and answers to problems outside of combat."},
+ {k:"vers",n:"Versatility",   ab:"Vers", d:"How much the class can change between days or builds."},
+ {k:"cplx",n:"Complexity",    ab:"Cplx", d:"How hard it is to play well.", cost:true},
+ {k:"res", n:"Bookkeeping",   ab:"Book", d:"Daily prep and limited resources to track.", cost:true}
 ];
 
 var CLASSES=[
@@ -849,16 +857,22 @@ function renderChips(){
     box.appendChild(b);
   });
 }
-function sparkFor(c){
-  var s=el("span","spark");
+function profileFor(c){
+  var wrap=el("div","pf");
+  wrap.setAttribute("role","img");
+  wrap.setAttribute("aria-label",c.name+" profile: "+
+    AXES.map(function(a){return a.n+" "+c.s[a.k]+" of 10"}).join(", "));
   AXES.forEach(function(a){
-    var i=document.createElement("i");
-    i.style.height=Math.max(2,Math.round(c.s[a.k]/10*20))+"px";
-    if(a.cost) i.className="cost";
-    s.appendChild(i);
+    var col=el("div","c"+(a.cost?" cost":""));
+    col.title=a.n+": "+c.s[a.k]+" of 10 \u2014 "+a.d;
+    col.appendChild(el("span","v",c.s[a.k]+""));
+    var b=el("span","b"); var f=document.createElement("i");
+    f.style.height=Math.max(3,Math.round(c.s[a.k]/10*38))+"px";
+    b.appendChild(f); col.appendChild(b);
+    col.appendChild(el("span","l",a.ab));
+    wrap.appendChild(col);
   });
-  s.title=AXES.map(function(a){return a.n+" "+c.s[a.k]}).join(" · ");
-  return s;
+  return wrap;
 }
 function renderList(){
   var list=$("#list"); list.textContent="";
@@ -877,8 +891,8 @@ function renderList(){
     main.appendChild(el("div","tl",c.tag));
     var meta=el("div","meta");
     c.roles.forEach(function(r){ meta.appendChild(el("span","badge",r)) });
-    meta.appendChild(sparkFor(c));
     main.appendChild(meta);
+    main.appendChild(profileFor(c));
     var open=el("button","rowopen");
     open.appendChild(main);
     open.setAttribute("aria-label","Open "+c.name);
