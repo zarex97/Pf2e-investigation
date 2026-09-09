@@ -16,9 +16,20 @@ Each class entry covers three things:
 Plus a **Play it if / Skip it if** verdict and a ten-axis Classfinder profile
 per class, readable straight from the list without opening anything.
 
+## Two editions
+
+* `index.html` — English
+* `index.es.html` — Spanish (*Códice de Clases de Pathfinder*)
+
+Both are complete and independent. The Spanish edition keeps each class's
+**English name** beside the translated one, because the Archives of Nethys and
+most PF2e tools are English-only; its search matches either, so `fighter` and
+`guerrero` both find the Guerrero. Its profile rows are a little taller because
+Spanish axis labels are longer ("Cuerpo a cuerpo" vs "Melee").
+
 ## Using it
 
-Open `index.html` in any browser. No build step, no dependencies, no server.
+Open `index.html` (or `index.es.html`) in any browser. No build step, no dependencies, no server.
 Fonts load from Google Fonts; everything else is inline.
 
 * **Classes** tab — search across names, mechanics and flavour; filter by chassis
