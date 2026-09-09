@@ -96,15 +96,18 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .badge{font-family:var(--f-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;
   color:var(--ink-2);border:1px solid var(--line-strong);border-radius:4px;padding:1px 5px}
 .badge.k{border-color:var(--accent);color:var(--accent)}
-.pf{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:11px;max-width:352px}
-.pf .c{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.pf{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:11px;align-items:start}
+.pf .c{display:grid;grid-template-rows:12px 40px 10px;gap:4px;height:70px;
+  align-items:end;justify-items:center;min-width:0}
 .pf .v{font-family:var(--f-mono);font-size:11.5px;font-weight:500;color:var(--ink-2);
   font-variant-numeric:tabular-nums;line-height:1}
-.pf .b{width:100%;height:38px;background:var(--track);border-radius:2px;
-  display:flex;align-items:flex-end;overflow:hidden}
+.pf .b{width:100%;height:100%;border-radius:2px;display:flex;align-items:flex-end;overflow:hidden;
+  background:repeating-linear-gradient(to bottom,var(--track) 0 7px,var(--bg) 7px 8px)}
 .pf .b i{display:block;width:100%;background:var(--accent);border-radius:2px 2px 0 0}
-.pf .c.cost .v{color:var(--ink-3)}
-.pf .c.cost .b i{background:var(--ink-3);opacity:.5}
+.pf .c.k-cost .v{color:var(--ink-3)}
+.pf .c.k-cost .b i{background:var(--ink-3);opacity:.55}
+.pf .c.k-meta .v{color:var(--brass)}
+.pf .c.k-meta .b i{background:var(--brass);opacity:.8}
 .pf .l{font-family:var(--f-mono);font-size:9px;letter-spacing:.03em;text-transform:uppercase;
   color:var(--ink-3);line-height:1;white-space:nowrap}
 .star{flex:none;width:40px;height:40px;display:grid;place-items:center;
@@ -162,9 +165,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .bars{display:flex;flex-direction:column;gap:9px}
 .bar{display:grid;grid-template-columns:88px 1fr 26px;gap:9px;align-items:center}
 .bar .lb{font-size:12px;color:var(--ink-2);line-height:1.2}
-.bar .tk{height:9px;background:var(--track);border-radius:2px;position:relative;overflow:hidden}
+.bar .tk{height:10px;border-radius:2px;position:relative;overflow:hidden;
+  background:repeating-linear-gradient(to right,var(--track) 0 calc(20% - 1px),var(--bg) calc(20% - 1px) 20%)}
 .bar .tk i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:2px;display:block}
-.bar.cost .tk i{background:var(--ink-3)}
+.bar.k-cost .tk i{background:var(--ink-3)}
+.bar.k-meta .tk i{background:var(--brass)}
+.bar.k-cost .vl,.bar.k-meta .vl{color:var(--ink-3)}
 .bar .vl{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);
   text-align:right;font-variant-numeric:tabular-nums}
 .axhelp{font-size:12px;color:var(--ink-3);margin:12px 0 0;line-height:1.45}
@@ -182,7 +188,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .ax > h4 em{font-style:normal;color:var(--ink-3);font-size:9px}
 .grp{display:flex;flex-direction:column;gap:3px}
 .grp .g{display:grid;grid-template-columns:1fr 22px;gap:7px;align-items:center}
-.grp .gt{height:11px;background:var(--track);border-radius:2px;overflow:hidden}
+.grp .gt{height:12px;border-radius:2px;overflow:hidden;
+  background:repeating-linear-gradient(to right,var(--track) 0 calc(20% - 1px),var(--bg) calc(20% - 1px) 20%)}
 .grp .gt i{display:block;height:100%;border-radius:2px}
 .grp .gv{font-family:var(--f-mono);font-size:10.5px;color:var(--ink-3);
   text-align:right;font-variant-numeric:tabular-nums}
@@ -217,6 +224,7 @@ table.cmpt li{margin-bottom:4px}
 .about p{margin:0 0 10px;font-size:13px;line-height:1.55;color:var(--ink-2)}
 .about p:last-child{margin-bottom:0}
 .about b{color:var(--ink);font-weight:600}
+.about a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 .note{border-left:3px solid var(--brass);background:var(--brass-soft);
   padding:11px 13px;border-radius:0 var(--r) var(--r) 0;margin:0 0 14px}
 .note p{color:var(--ink);margin:0;font-size:13px;line-height:1.5}
@@ -256,7 +264,7 @@ table.cmpt li{margin-bottom:4px}
       <h3>About this codex</h3>
       <p><b>Every base class in Pathfinder Second Edition</b> as of <i>Impossible Magic</i> (July 2026) &mdash; 29 in all. Each entry covers the mechanical engine you actually operate turn to turn, and the character the class asks you to play.</p>
       <p><b>Action symbols</b> follow the game&rsquo;s own notation: <span class="act">&#9670;</span> one action, <span class="act">&#9670;&#9670;</span> two actions, <span class="act">&#9670;&#9670;&#9670;</span> three actions, <span class="act">&#8635;</span> reaction, <span class="act">&#9671;</span> free action.</p>
-      <p><b>The eight bars</b> are a shorthand, not a power ranking. Six are upsides where more is better. Two &mdash; Complexity and Bookkeeping &mdash; are costs, drawn in grey: a high bar means the class asks more of you, which some players want and some don&rsquo;t.</p>
+      <p><b>The ten bars</b> come from <a href="https://classfinder2e.com/">Classfinder 2e</a> and run 0&ndash;5. Eight are capabilities where more is better. Two are not: <b>Difficulty</b> is a cost, drawn in grey &mdash; a high bar means the class asks more of its player. <b>Popularity</b>, in gold, is simply how often the class gets played, and is neither a strength nor a weakness.</p>
       <p id="provenance"></p>
     </div>
   </section>
@@ -275,15 +283,18 @@ table.cmpt li{margin-bottom:4px}
 <script>
 "use strict";
 
+var MAX=5;
 var AXES=[
- {k:"dmg", n:"Damage",        ab:"Dmg", d:"How reliably it removes enemy hit points."},
- {k:"surv",n:"Survivability", ab:"Surv", d:"Hit points, armour, saves, and staying upright."},
- {k:"sup", n:"Support",       ab:"Supp", d:"Healing, buffing, and handing allies actions."},
- {k:"ctrl",n:"Control",       ab:"Ctrl", d:"Shaping the battlefield and stapling conditions on foes."},
- {k:"util",n:"Utility",       ab:"Util", d:"Skills and answers to problems outside of combat."},
- {k:"vers",n:"Versatility",   ab:"Vers", d:"How much the class can change between days or builds."},
- {k:"cplx",n:"Complexity",    ab:"Cplx", d:"How hard it is to play well.", cost:true},
- {k:"res", n:"Bookkeeping",   ab:"Book", d:"Daily prep and limited resources to track.", cost:true}
+ {k:"melee",     n:"Melee",      ab:"Mel", d:"Holding your own in close quarters."},
+ {k:"ranged",    n:"Ranged",     ab:"Rng", d:"Contributing from a distance."},
+ {k:"defenses",  n:"Defenses",   ab:"Def", d:"Armour, saves, and staying upright."},
+ {k:"magic",     n:"Magic",      ab:"Mag", d:"Access to spells and magical effects."},
+ {k:"support",   n:"Support",    ab:"Sup", d:"Buffing allies and improving their turns."},
+ {k:"healing",   n:"Healing",    ab:"Hea", d:"Restoring hit points and clearing conditions."},
+ {k:"skills",    n:"Skills",     ab:"Skl", d:"Breadth and depth of skill proficiency."},
+ {k:"questing",  n:"Questing",   ab:"Qst", d:"Solving problems outside of combat."},
+ {k:"popularity",n:"Popularity", ab:"Pop", kind:"meta", d:"How commonly the class is played - neither good nor bad."},
+ {k:"difficulty",n:"Difficulty", ab:"Dif", kind:"cost", d:"How demanding the class is to play well."}
 ];
 
 var CLASSES=[
@@ -302,7 +313,7 @@ var CLASSES=[
   "Alchemy in Golarion is a craft, not a gift. Nothing about you is chosen or bestowed &mdash; you read, you tested, you failed, you wrote it down. That makes for a very particular kind of pride."],
  yes:"You like inventory as a puzzle, want an answer to nearly any situation, and enjoy being the person who says \"hold on, I made one of those.\"",
  no:"You want to open your sheet and hit something. The alchemist has more moving parts than any other class in the game.",
- s:{dmg:6,surv:5,sup:7,ctrl:6,util:9,vers:9,cplx:9,res:9}},
+ s:{melee:2,ranged:3,defenses:3,magic:0,support:5,healing:4,skills:4,questing:3,popularity:2,difficulty:5}},
 
 {id:"animist",name:"Animist",src:"War of Immortals",type:"Caster",roles:["Support","Controller"],
  hp:"8",key:"Wisdom",cast:"Divine (prepared + spontaneous)",armor:"Light",sub:"Practice",
@@ -319,7 +330,7 @@ var CLASSES=[
   "It suits animist and ancestor-venerating traditions, and it is a good fit for a character from a place rather than a faith &mdash; the spirits of a specific valley, a specific ruin, a specific dead."],
  yes:"You want the flexibility of a prepared caster and the responsiveness of a spontaneous one, and you like a character with company inside their own head.",
  no:"You want a straightforward caster. Between two spell engines, focus spells and a daily attunement choice, the animist is a lot of surface area.",
- s:{dmg:6,surv:6,sup:9,ctrl:8,util:8,vers:9,cplx:9,res:7}},
+ s:{melee:2,ranged:3,defenses:3,magic:4,support:3,healing:4,skills:3,questing:2,popularity:4,difficulty:5}},
 
 {id:"barbarian",name:"Barbarian",src:"Player Core 2",type:"Martial",roles:["Striker","Defender"],
  hp:"12",key:"Strength",cast:"None",armor:"Light &amp; medium",sub:"Instinct",
@@ -336,7 +347,7 @@ var CLASSES=[
   "It plays well as devotion rather than brutishness &mdash; a barbarian is very often the most loyal, most direct, and most honest person in the party."],
  yes:"You want big numbers, a big health bar, and a turn you can execute without a flowchart.",
  no:"You want tactical options mid-fight, or you want to talk your way through problems while raging &mdash; you cannot.",
- s:{dmg:9,surv:8,sup:2,ctrl:4,util:3,vers:4,cplx:3,res:3}},
+ s:{melee:5,ranged:2,defenses:4,magic:0,support:1,healing:0,skills:1,questing:1,popularity:4,difficulty:1}},
 
 {id:"bard",name:"Bard",src:"Player Core",type:"Caster",roles:["Support","Controller"],
  hp:"8",key:"Charisma",cast:"Occult (spontaneous)",armor:"Light",sub:"Muse",
@@ -353,7 +364,7 @@ var CLASSES=[
   "Your muse is a genuine character relationship &mdash; a person, a dead mentor, an abstraction, an obsession. The Enigma bard's muse is curiosity itself, which is a fine thing to build a person around."],
  yes:"You want to be the reason the party wins without needing the biggest numbers on your own sheet, and you enjoy talking.",
  no:"You want the spotlight in damage terms, or you dislike having your best contribution be a bonus on someone else's dice.",
- s:{dmg:6,surv:5,sup:10,ctrl:8,util:9,vers:8,cplx:6,res:6}},
+ s:{melee:2,ranged:3,defenses:2,magic:4,support:5,healing:1,skills:3,questing:5,popularity:5,difficulty:3}},
 
 {id:"champion",name:"Champion",src:"Player Core 2",type:"Martial",roles:["Defender","Support"],
  hp:"10",key:"Strength or Dexterity",cast:"Divine focus spells",armor:"All, incl. heavy",sub:"Cause",
@@ -370,7 +381,7 @@ var CLASSES=[
   "Playing one well means letting the oath cost you something. A champion who never faces a choice between winning and keeping their word is not being played."],
  yes:"You want to be the wall, you like reactive play, and you want a character whose morality is load-bearing.",
  no:"You want maximum damage, or you find hard-coded behavioural restrictions constraining rather than interesting.",
- s:{dmg:6,surv:10,sup:8,ctrl:4,util:3,vers:5,cplx:4,res:5}},
+ s:{melee:3,ranged:2,defenses:5,magic:2,support:3,healing:2,skills:1,questing:2,popularity:5,difficulty:2}},
 
 {id:"cleric",name:"Cleric",src:"Player Core",type:"Caster",roles:["Support","Controller"],
  hp:"8",key:"Wisdom",cast:"Divine (prepared)",armor:"Varies by doctrine",sub:"Doctrine",
@@ -387,7 +398,7 @@ var CLASSES=[
   "Warpriest and cloistered cleric are almost different characters: one is a militant of the faith, the other a scholar, physician or pastor who happens to be adventuring."],
  yes:"You want to be indispensable, you like prepared casting as a planning exercise, and you want faith to be a real part of the character.",
  no:"You resent being the designated healer, or you would rather not have a deity looking over your shoulder.",
- s:{dmg:6,surv:6,sup:10,ctrl:7,util:7,vers:8,cplx:6,res:7}},
+ s:{melee:2,ranged:2,defenses:2,magic:4,support:3,healing:5,skills:2,questing:2,popularity:5,difficulty:3}},
 
 {id:"commander",name:"Commander",src:"Battlecry!",type:"Martial",roles:["Support","Controller"],
  hp:"8",key:"Intelligence",cast:"None",armor:"Light &amp; medium",sub:"None at 1st &mdash; your folio defines you",
@@ -404,7 +415,7 @@ var CLASSES=[
   "Because tactics are <i>taught</i>, there is a built-in relationship with every party member &mdash; you have drilled with these people, and that history is worth playing."],
  yes:"You are the person at the table who already tells everyone what to do, and you would like the rules to reward it.",
  no:"You want personal glory, or you are in a group that finds being directed in combat unwelcome. This class only works with willing allies.",
- s:{dmg:5,surv:6,sup:10,ctrl:6,util:6,vers:7,cplx:8,res:4}},
+ s:{melee:3,ranged:3,defenses:3,magic:0,support:5,healing:1,skills:4,questing:3,popularity:3,difficulty:4}},
 
 {id:"druid",name:"Druid",src:"Player Core",type:"Caster",roles:["Controller","Support","Utility"],
  hp:"8",key:"Wisdom",cast:"Primal (prepared)",armor:"Light &amp; medium",sub:"Order",
@@ -421,7 +432,7 @@ var CLASSES=[
   "The good version is not \"nature is nice.\" Nature is indifferent, enormous and unsentimental, and the druid is its representative in a room full of people who build cities."],
  yes:"You want elemental spectacle, a broad and useful list, and an order that gives you a second identity to grow into.",
  no:"You want the arcane or occult toolkits, or you would rather not deal with prepared-caster planning.",
- s:{dmg:7,surv:6,sup:7,ctrl:9,util:8,vers:9,cplx:7,res:7}},
+ s:{melee:2,ranged:3,defenses:3,magic:4,support:2,healing:4,skills:2,questing:4,popularity:2,difficulty:3}},
 
 {id:"exemplar",name:"Exemplar",src:"War of Immortals",type:"Martial",roles:["Striker","Support"],
  hp:"10",key:"Strength or Dexterity",cast:"Divine (ikon powers)",armor:"Light &amp; medium",sub:"Ikons &amp; Epithet",
@@ -438,7 +449,7 @@ var CLASSES=[
   "The epithet is the best roleplay hook Paizo has printed in years: you are addressed by what you are known for, and that reputation walks into rooms ahead of you."],
  yes:"You want a mythic-hero fantasy, a martial with real in-combat decisions, and near-zero daily bookkeeping.",
  no:"You want a humble character, or you want a class where the interesting choices happen during preparation rather than mid-turn.",
- s:{dmg:8,surv:7,sup:6,ctrl:5,util:5,vers:7,cplx:7,res:3}},
+ s:{melee:4,ranged:3,defenses:4,magic:0,support:2,healing:1,skills:2,questing:2,popularity:3,difficulty:3}},
 
 {id:"fighter",name:"Fighter",src:"Player Core",type:"Martial",roles:["Striker","Defender"],
  hp:"10",key:"Strength or Dexterity",cast:"None",armor:"All, incl. heavy",sub:"None &mdash; your weapon is the choice",
@@ -455,7 +466,7 @@ var CLASSES=[
   "It is also the class most likely to be the party's practical conscience &mdash; the one who has actually been in a fight before and knows what they cost."],
  yes:"You are new to Pathfinder, or you are experienced and simply want to be extremely good at the thing you do every round.",
  no:"You want magic, out-of-combat problem-solving tools, or a class that changes shape between adventuring days.",
- s:{dmg:10,surv:8,sup:4,ctrl:6,util:3,vers:6,cplx:3,res:2}},
+ s:{melee:5,ranged:4,defenses:4,magic:0,support:2,healing:0,skills:2,questing:1,popularity:5,difficulty:1}},
 
 {id:"guardian",name:"Guardian",src:"Battlecry!",type:"Martial",roles:["Defender","Support"],
  hp:"12",key:"Strength",cast:"None",armor:"All, incl. heavy",sub:"None at 1st",
@@ -472,7 +483,7 @@ var CLASSES=[
   "It carries an unusual emotional weight at the table, because interception is a mechanic where you visibly choose to be hurt so a friend is not."],
  yes:"You genuinely enjoy protecting people, and you want that to be your contribution rather than a side effect.",
  no:"You measure a good session in damage dealt. The guardian trades offence away almost entirely.",
- s:{dmg:4,surv:10,sup:8,ctrl:6,util:3,vers:4,cplx:4,res:2}},
+ s:{melee:3,ranged:1,defenses:5,magic:0,support:3,healing:0,skills:2,questing:1,popularity:4,difficulty:2}},
 
 {id:"gunslinger",name:"Gunslinger",src:"Guns &amp; Gears",type:"Martial",roles:["Striker"],
  hp:"8",key:"Dexterity",cast:"None",armor:"Light &amp; medium",sub:"Way",
@@ -489,7 +500,7 @@ var CLASSES=[
   "The maintenance is a character trait too: these weapons misfire, need cleaning, and cost money. That is a relationship with an object, and it plays well."],
  yes:"You want big, dramatic single hits and a Western or Alkenstar-flavoured character with real personality.",
  no:"Your table does not use firearms, or you find per-round reload management tedious rather than tactical.",
- s:{dmg:8,surv:5,sup:4,ctrl:5,util:5,vers:6,cplx:7,res:4}},
+ s:{melee:2,ranged:5,defenses:3,magic:1,support:2,healing:0,skills:2,questing:2,popularity:1,difficulty:2}},
 
 {id:"inventor",name:"Inventor",src:"Guns &amp; Gears",type:"Martial",roles:["Striker","Utility","Support"],
  hp:"8",key:"Intelligence",cast:"None",armor:"Light &amp; medium",sub:"Innovation",
@@ -506,7 +517,7 @@ var CLASSES=[
   "It fits gnomish tinkers, Alkenstar engineers, dwarven smiths and any character whose defining relationship is with an object they will not stop improving."],
  yes:"You love the idea of a signature invention you tune over the campaign, and you enjoy a calculated gamble.",
  no:"You want reliability. Overdrive can fail and unstable actions can break your central item mid-fight.",
- s:{dmg:7,surv:6,sup:6,ctrl:6,util:7,vers:8,cplx:9,res:5}},
+ s:{melee:3,ranged:3,defenses:3,magic:0,support:2,healing:1,skills:4,questing:2,popularity:1,difficulty:3}},
 
 {id:"investigator",name:"Investigator",src:"Player Core 2",type:"Martial",roles:["Utility","Striker"],
  hp:"8",key:"Intelligence",cast:"None",armor:"Light",sub:"Methodology",
@@ -523,7 +534,7 @@ var CLASSES=[
   "Methodology gives you a profession, not just a build: coroner, alienist, chemist, interrogator. Investigators come with a job, and jobs come with contacts and enemies."],
  yes:"You want to be the smartest person in the room, your GM runs mysteries, and you like knowing the outcome before you commit.",
  no:"Your campaign is a dungeon crawl. The investigator's combat damage is modest and much of the class is aimed at problems that a pure combat game will not present.",
- s:{dmg:6,surv:5,sup:6,ctrl:4,util:10,vers:7,cplx:8,res:4}},
+ s:{melee:2,ranged:3,defenses:2,magic:1,support:3,healing:3,skills:5,questing:5,popularity:1,difficulty:4}},
 
 {id:"kineticist",name:"Kineticist",src:"Rage of Elements",type:"Hybrid",roles:["Striker","Controller","Defender"],
  hp:"8",key:"Constitution",cast:"None &mdash; impulses are at-will",armor:"Light &amp; medium",sub:"Kinetic Gate",
@@ -540,7 +551,7 @@ var CLASSES=[
   "Because there is no resource to hoard, the kineticist is the class most willing to use its magic for small things &mdash; lighting a fire, moving a boat, shaping a wall. That casual constant magic is the roleplay."],
  yes:"You want to sling elemental power every single round without ever tracking a slot, and you like being durable while doing it.",
  no:"You want the flexibility of a spell list. The kineticist's options are fixed at build time and cannot be swapped day to day.",
- s:{dmg:8,surv:8,sup:6,ctrl:8,util:7,vers:7,cplx:8,res:2}}
+ s:{melee:3,ranged:4,defenses:3,magic:3,support:3,healing:3,skills:1,questing:2,popularity:5,difficulty:3}}
 ];
 
 CLASSES.push(
@@ -559,7 +570,7 @@ CLASSES.push(
   "There is a natural arrogance to the fantasy, and it plays beautifully &mdash; a magus knows their alpha strike is the best thing anyone at the table can do, and is usually right."],
  yes:"You want to build toward one devastating moment per fight and enjoy the setup as much as the payoff.",
  no:"You want to cast spells as a caster does. The magus has almost no spell economy outside Spellstrike, and mistiming the recharge wastes rounds.",
- s:{dmg:9,surv:6,sup:4,ctrl:5,util:5,vers:6,cplx:9,res:6}},
+ s:{melee:4,ranged:3,defenses:3,magic:3,support:1,healing:0,skills:2,questing:2,popularity:2,difficulty:3}},
 
 {id:"monk",name:"Monk",src:"Player Core 2",type:"Martial",roles:["Striker","Defender"],
  hp:"10",key:"Strength or Dexterity",cast:"Optional focus spells",armor:"Unarmored (best in game)",sub:"Stance / feat choice",
@@ -576,7 +587,7 @@ CLASSES.push(
   "The stance you favour is a fighting style with a name and a lineage, which gives you rivals, teachers and a tradition to belong to or have been thrown out of."],
  yes:"You want mobility, a high AC, and multiple attacks without needing gear to make it work.",
  no:"You want the biggest single hit. Monks trade per-hit damage for volume and positioning.",
- s:{dmg:8,surv:8,sup:4,ctrl:6,util:6,vers:8,cplx:6,res:3}},
+ s:{melee:4,ranged:2,defenses:4,magic:1,support:2,healing:0,skills:1,questing:1,popularity:3,difficulty:2}},
 
 {id:"necromancer",name:"Necromancer",src:"Impossible Magic",type:"Caster",roles:["Controller","Striker"],
  hp:"8",key:"Intelligence",cast:"Occult (prepared)",armor:"Light",sub:"Grim Fascination",
@@ -593,7 +604,7 @@ CLASSES.push(
   "The scholarly angle plays well: a necromancer is often the person most interested in death as a subject and least squeamish about it, which is a distinctive voice at a table."],
  yes:"You want a full caster with a swarm of disposable bodies, and you enjoy a class the party may need to argue about.",
  no:"You want to be uncomplicatedly welcome in town, or you dislike managing extra creatures on your turn.",
- s:{dmg:7,surv:4,sup:6,ctrl:9,util:6,vers:7,cplx:9,res:7}},
+ s:{melee:3,ranged:3,defenses:2,magic:3,support:3,healing:2,skills:3,questing:2,popularity:3,difficulty:4}},
 
 {id:"oracle",name:"Oracle",src:"Player Core 2",type:"Caster",roles:["Support","Controller","Striker"],
  hp:"8",key:"Charisma",cast:"Divine (spontaneous)",armor:"Light",sub:"Mystery",
@@ -610,7 +621,7 @@ CLASSES.push(
   "Play the cost visibly. The curse is not a debuff to hide &mdash; it is the character. Others should be able to see it happening to you as the fight goes on."],
  yes:"You want spontaneous divine casting with a built-in dramatic engine, and a character whose power visibly costs them something.",
  no:"You want clean, predictable resources. The oracle deliberately makes its best options carry a penalty.",
- s:{dmg:7,surv:5,sup:8,ctrl:7,util:7,vers:7,cplx:8,res:7}},
+ s:{melee:2,ranged:3,defenses:2,magic:5,support:4,healing:3,skills:2,questing:4,popularity:1,difficulty:5}},
 
 {id:"psychic",name:"Psychic",src:"Dark Archive",type:"Caster",roles:["Striker","Controller"],
  hp:"6",key:"Charisma or Intelligence",cast:"Occult (spontaneous)",armor:"Unarmored",sub:"Conscious &amp; Subconscious Mind",
@@ -627,7 +638,7 @@ CLASSES.push(
   "The conscious/subconscious pairing is an invitation to play a divided person: what your mind reaches for, and what reaches back."],
  yes:"You want cantrip-based casting you can use forever, punctuated by short windows of enormous power.",
  no:"You want a broad prepared toolkit, or you cannot reliably stay out of melee &mdash; this class dies quickly.",
- s:{dmg:8,surv:3,sup:6,ctrl:7,util:6,vers:6,cplx:7,res:5}},
+ s:{melee:2,ranged:4,defenses:1,magic:4,support:2,healing:1,skills:3,questing:3,popularity:1,difficulty:4}},
 
 {id:"ranger",name:"Ranger",src:"Player Core",type:"Martial",roles:["Striker","Utility"],
  hp:"10",key:"Strength or Dexterity",cast:"Optional primal focus spells",armor:"Light &amp; medium",sub:"Hunter's Edge",
@@ -644,7 +655,7 @@ CLASSES.push(
   "It works for a wilderness guide, a bounty hunter, a city tracker, a monster specialist, or someone raised by a place rather than by people."],
  yes:"You want a strong, low-friction martial with genuine exploration utility and an optional animal companion.",
  no:"You want to be equally good against everything at once; the ranger is at its best pointed at one target at a time.",
- s:{dmg:8,surv:7,sup:4,ctrl:5,util:8,vers:8,cplx:5,res:3}},
+ s:{melee:4,ranged:4,defenses:4,magic:1,support:2,healing:1,skills:3,questing:3,popularity:2,difficulty:2}},
 
 {id:"rogue",name:"Rogue",src:"Player Core",type:"Martial",roles:["Striker","Utility"],
  hp:"8",key:"Dexterity (varies by racket)",cast:"None",armor:"Light",sub:"Racket",
@@ -661,7 +672,7 @@ CLASSES.push(
   "With legendary skills you become the party's answer to almost every non-combat obstacle, and that competence is a personality: rogues rarely admit there is something they cannot do."],
  yes:"You want to be excellent outside combat, mobile inside it, and you enjoy setting up your own damage.",
  no:"You want damage with no prerequisites. Without an off-guard target the rogue's numbers fall off sharply.",
- s:{dmg:8,surv:6,sup:5,ctrl:6,util:10,vers:9,cplx:6,res:2}},
+ s:{melee:4,ranged:3,defenses:3,magic:0,support:3,healing:0,skills:5,questing:5,popularity:5,difficulty:2}},
 
 {id:"runesmith",name:"Runesmith",src:"Impossible Magic",type:"Martial",roles:["Support","Striker","Controller"],
  hp:"8",key:"Intelligence",cast:"None &mdash; runes, not spells",armor:"Light &amp; medium",sub:"Runic specialisation",
@@ -678,7 +689,7 @@ CLASSES.push(
   "Dwarven and other traditional runic cultures are the obvious fit, but a scholar who reconstructed the script from ruins is just as strong, and lonelier."],
  yes:"You want a martial with a magical toolkit that helps allies and hinders enemies through the same elegant mechanic.",
  no:"You want to hit things without a setup step. The runesmith spends actions preparing before it pays off.",
- s:{dmg:7,surv:7,sup:7,ctrl:7,util:6,vers:8,cplx:8,res:4}},
+ s:{melee:3,ranged:3,defenses:3,magic:1,support:4,healing:1,skills:3,questing:2,popularity:2,difficulty:3}},
 
 {id:"sorcerer",name:"Sorcerer",src:"Player Core 2",type:"Caster",roles:["Striker","Controller"],
  hp:"6",key:"Charisma",cast:"Any tradition (spontaneous)",armor:"Unarmored",sub:"Bloodline",
@@ -695,7 +706,7 @@ CLASSES.push(
   "Sorcerers make good faces and good problems: enormous natural talent, no formal training, and an inheritance that other people may recognise before you do."],
  yes:"You want to cast the most spells, adapt in the moment, and pick your tradition to suit the party.",
  no:"You want a large known-spell list or a durable body. Your repertoire is narrow and you are extremely fragile.",
- s:{dmg:8,surv:4,sup:7,ctrl:8,util:7,vers:7,cplx:6,res:6}},
+ s:{melee:1,ranged:4,defenses:1,magic:5,support:3,healing:3,skills:2,questing:4,popularity:3,difficulty:3}},
 
 {id:"summoner",name:"Summoner",src:"Impossible Magic",type:"Hybrid",roles:["Striker","Defender"],
  hp:"10 (shared with eidolon)",key:"Charisma",cast:"Tradition of your eidolon (spontaneous, 1 slot/rank)",armor:"Light",sub:"Eidolon",
@@ -712,7 +723,7 @@ CLASSES.push(
   "Where did it come from, and does it want to be here? A summoner who has never answered that is leaving the best part of the class unused."],
  yes:"You want a genuine partner character, and you find the shared-action puzzle interesting rather than restrictive.",
  no:"You want to control one character efficiently. The summoner is the slowest class to take a turn with in the game.",
- s:{dmg:7,surv:7,sup:6,ctrl:6,util:6,vers:8,cplx:9,res:4}},
+ s:{melee:3,ranged:3,defenses:3,magic:3,support:2,healing:1,skills:3,questing:4,popularity:1,difficulty:5}},
 
 {id:"swashbuckler",name:"Swashbuckler",src:"Player Core 2",type:"Martial",roles:["Striker","Utility"],
  hp:"10",key:"Dexterity",cast:"None",armor:"Light",sub:"Style",
@@ -729,7 +740,7 @@ CLASSES.push(
   "Style is character: the boaster, the dancer, the duellist, the acrobat and the wit are five different people who all fight the same way."],
  yes:"You want to describe your character doing something dashing every single round and be mechanically rewarded for it.",
  no:"You want consistency. Without panache the swashbuckler's damage drops noticeably, and earning it can fail.",
- s:{dmg:8,surv:6,sup:5,ctrl:5,util:7,vers:6,cplx:7,res:3}},
+ s:{melee:4,ranged:2,defenses:4,magic:0,support:2,healing:0,skills:4,questing:3,popularity:3,difficulty:3}},
 
 {id:"thaumaturge",name:"Thaumaturge",src:"Dark Archive",type:"Martial",roles:["Striker","Utility"],
  hp:"8",key:"Charisma",cast:"None &mdash; esoterica &amp; implements",armor:"Light &amp; medium",sub:"Implement",
@@ -746,7 +757,7 @@ CLASSES.push(
   "Each implement wants a history &mdash; where the bell came from, whose tome that is. A thaumaturge's inventory is genuinely their backstory, item by item."],
  yes:"You want an occult monster-hunter who is great at knowledge, great in a fight, and carries a lot of odd objects.",
  no:"You want simplicity. Between implements, esoterica and vulnerability tracking, the thaumaturge has a busy sheet and a busy turn.",
- s:{dmg:8,surv:6,sup:6,ctrl:5,util:9,vers:8,cplx:9,res:4}},
+ s:{melee:4,ranged:3,defenses:3,magic:2,support:3,healing:1,skills:4,questing:4,popularity:4,difficulty:3}},
 
 {id:"witch",name:"Witch",src:"Player Core",type:"Caster",roles:["Controller","Support"],
  hp:"6",key:"Intelligence",cast:"Any tradition, set by patron (prepared)",armor:"Unarmored",sub:"Patron",
@@ -763,7 +774,7 @@ CLASSES.push(
   "The Remaster widened the fantasy well past the cauldron: a witch can be a village herbalist, a scholarly recipient of a strange correspondence, or someone with a very bad bargain."],
  yes:"You want deep control magic, an all-day hex engine, and a familiar you will genuinely get attached to.",
  no:"You dislike single points of failure. Losing your familiar is a real risk that other casters do not carry.",
- s:{dmg:6,surv:4,sup:8,ctrl:9,util:8,vers:8,cplx:8,res:6}},
+ s:{melee:1,ranged:3,defenses:1,magic:4,support:5,healing:2,skills:3,questing:2,popularity:4,difficulty:5}},
 
 {id:"wizard",name:"Wizard",src:"Player Core",type:"Caster",roles:["Controller","Utility"],
  hp:"6",key:"Intelligence",cast:"Arcane (prepared)",armor:"Unarmored",sub:"School + Thesis",
@@ -780,7 +791,7 @@ CLASSES.push(
   "The wizard's failure mode is arrogance and its virtue is preparation, which is a rich combination. You are the person who has read about this before."],
  yes:"You want the deepest toolbox in the game and you enjoy the puzzle of preparing for a day you cannot fully predict.",
  no:"You want to improvise. A wizard who prepares badly has a bad day, and 6 hit points with no armour leaves no room for mistakes.",
- s:{dmg:7,surv:4,sup:7,ctrl:9,util:9,vers:10,cplx:8,res:8}}
+ s:{melee:1,ranged:4,defenses:1,magic:5,support:3,healing:0,skills:3,questing:3,popularity:2,difficulty:5}}
 );
 
 /* ---------------- palette for compare columns ---------------- */
@@ -861,13 +872,13 @@ function profileFor(c){
   var wrap=el("div","pf");
   wrap.setAttribute("role","img");
   wrap.setAttribute("aria-label",c.name+" profile: "+
-    AXES.map(function(a){return a.n+" "+c.s[a.k]+" of 10"}).join(", "));
+    AXES.map(function(a){return a.n+" "+c.s[a.k]+" of "+MAX}).join(", "));
   AXES.forEach(function(a){
-    var col=el("div","c"+(a.cost?" cost":""));
-    col.title=a.n+": "+c.s[a.k]+" of 10 \u2014 "+a.d;
+    var col=el("div","c"+(a.kind?" k-"+a.kind:""));
+    col.title=a.n+": "+c.s[a.k]+" of "+MAX+" \u2014 "+a.d;
     col.appendChild(el("span","v",c.s[a.k]+""));
     var b=el("span","b"); var f=document.createElement("i");
-    f.style.height=Math.max(3,Math.round(c.s[a.k]/10*38))+"px";
+    f.style.height=Math.round(c.s[a.k]/MAX*40)+"px";
     b.appendChild(f); col.appendChild(b);
     col.appendChild(el("span","l",a.ab));
     wrap.appendChild(col);
@@ -910,10 +921,10 @@ function renderList(){
 function barsFor(c){
   var wrap=el("div","bars");
   AXES.forEach(function(a){
-    var b=el("div","bar"+(a.cost?" cost":""));
+    var b=el("div","bar"+(a.kind?" k-"+a.kind:""));
     b.appendChild(el("span","lb",a.n));
     var tk=el("span","tk"); var f=document.createElement("i");
-    f.style.width=(c.s[a.k]*10)+"%"; tk.appendChild(f); b.appendChild(tk);
+    f.style.width=(c.s[a.k]/MAX*100)+"%"; tk.appendChild(f); b.appendChild(tk);
     b.appendChild(el("span","vl",c.s[a.k]+""));
     b.title=a.d;
     wrap.appendChild(b);
@@ -990,7 +1001,7 @@ function renderCompare(){
   intro.appendChild(el("p","axhelp",
     picked.length===1
       ? "One class selected. Star a second to see them compared side by side."
-      : picked.length+" classes selected. Bars share one 0&ndash;10 scale; the table below scrolls sideways."));
+      : picked.length+" classes selected. Every bar is on the same 0&ndash;5 scale; the table below scrolls sideways."));
   box.appendChild(intro);
 
   var lg=el("div","legend");
@@ -1005,15 +1016,15 @@ function renderCompare(){
   var ab=el("div","axblock");
   AXES.forEach(function(a){
     var g=el("div","ax");
-    g.appendChild(el("h4",null,a.n+(a.cost?" <em>cost</em>":"")));
+    g.appendChild(el("h4",null,a.n+(a.kind?" <em>"+a.kind+"</em>":"")));
     var grp=el("div","grp");
     picked.forEach(function(c){
       var r=el("div","g");
       var t=el("div","gt"); var f=document.createElement("i");
-      f.style.width=(c.s[a.k]*10)+"%";
+      f.style.width=(c.s[a.k]/MAX*100)+"%";
       f.style.background=favColor(c.id);
-      if(a.cost) f.style.opacity=".45";
-      t.appendChild(f); t.title=c.name+": "+a.n+" "+c.s[a.k];
+      if(a.kind) f.style.opacity=a.kind==="cost"?".42":".7";
+      t.appendChild(f); t.title=c.name+": "+a.n+" "+c.s[a.k]+" of "+MAX;
       r.appendChild(t);
       r.appendChild(el("div","gv",c.s[a.k]+""));
       grp.appendChild(r);
@@ -1087,7 +1098,7 @@ function renderAll(){
 /* ---------------- init ---------------- */
 favs=loadFavs();
 $("#rosterN").textContent=CLASSES.length+" classes";
-$("#provenance").innerHTML="<b>A note on sourcing.</b> This session had no outbound network access, so the class write-ups were composed from knowledge of the Remastered rules rather than scraped from the Archives of Nethys, and the eight bars are this codex&rsquo;s own editorial read &mdash; they are <i>not</i> the numbers from classfinder2e.com. Treat them as a starting shortlist, then confirm details against the Archives before you build.";
+$("#provenance").innerHTML="<b>A note on sourcing.</b> The ten bars are <a href=\"https://classfinder2e.com/\">Classfinder 2e</a>&rsquo;s ratings, supplied as data. The written summaries are this codex&rsquo;s own, composed from knowledge of the Remastered rules &mdash; the session that built this had no network access to the Archives of Nethys, so confirm rules details against <a href=\"https://2e.aonprd.com/\">the Archives</a> before you commit to a build. Classfinder also rates six Starfinder 2e classes; those are out of scope here.";
 
 var sel=$("#sort");
 [["name","Name A–Z"]].concat(AXES.map(function(a){return ["s:"+a.k,a.n+" (high first)"]}))
