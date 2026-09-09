@@ -41,8 +41,13 @@ Ratings come from [Classfinder 2e](https://classfinder2e.com/) and run **0-5**:
 | Popularity | How often the class is played - **neither good nor bad**, shown in gold |
 | Difficulty | How demanding the class is to play well - a **cost**, shown in grey |
 
-Eight are capabilities where more is better. The last two are not, and the app
-colours them differently so a tall bar is never misread as "better".
+Every axis carries its own colour and glyph everywhere it appears - the class
+list, the detail view, and the comparison - so a class's shape is readable
+without checking labels each time.
+
+Eight of the ten are capabilities where more is better. The last two are not,
+and they are drawn in deliberately muted greys so a tall bar is never misread
+as "better".
 
 ## Sourcing
 
