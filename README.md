@@ -3,12 +3,15 @@
 A single-file, mobile-first reference to **all 29 Pathfinder Second Edition base
 classes** (current through *Impossible Magic*, July 2026).
 
-Each class entry covers two things:
+Each class entry covers three things:
 
 * **The engine** — what you actually do on your turn: the signature actions, the
   subclass fork, the resources you spend, and where the class's difficulty lives.
 * **At the table** — what the class means as a character: its fantasy, its
   anathema and obligations, and the roleplay hooks baked into its rules.
+* **Downtime** — what the class does between adventures, which is often where
+  its personality shows most clearly: the alchemist's lab hours, the barbarian
+  building a legend in taverns, the rogue's guild, the wizard's schoolwork.
 
 Plus a **Play it if / Skip it if** verdict and a ten-axis Classfinder profile
 per class, readable straight from the list without opening anything.
@@ -53,10 +56,11 @@ as "better".
 
 The **ratings** are Classfinder 2e's, supplied as data.
 
-The **written summaries** - the engine, the roleplay, the play-it-if verdicts -
-are this codex's own, composed from knowledge of the Remastered rules. The
-session that built this had no outbound network access, so nothing was scraped
-from the Archives of Nethys; confirm rules details there before you build.
+The **written summaries** - engine, roleplay, downtime and the play-it-if
+verdicts - are drawn from a field guide compiled from the
+[Archives of Nethys](https://2e.aonprd.com/), supplied to the build as a file
+because the session itself had no outbound network access. Confirm specific
+rules against the Archives before you build a character.
 
 Classfinder also rates six Starfinder 2e classes (Envoy, Mystic, Operative,
 Solarian, Soldier, Witchwarper). Those are out of scope here.
