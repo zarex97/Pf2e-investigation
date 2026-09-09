@@ -1,0 +1,1212 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ARTIFACT-BODY-START -->
+<title>Códice de Clases de Pathfinder</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#E7E7EA; --surface:#FCFCFD; --surface-2:#F1F1F4; --surface-3:#E1E0E6;
+  --ink:#191922; --ink-2:#55535F; --ink-3:#84828F;
+  --line:#D2D1D8; --line-strong:#BBB9C4;
+  --accent:#C2402C; --accent-ink:#A0331F; --accent-soft:rgba(194,64,44,.10);
+  --brass:#97721F; --brass-soft:rgba(151,114,31,.14);
+  --track:#DBDAE1;
+  --shadow:0 1px 2px rgba(20,18,30,.06),0 8px 24px rgba(20,18,30,.08);
+  --r:10px;
+  --ax-melee:#C0392B; --ax-ranged:#CC6A1B; --ax-defenses:#2E6F9E; --ax-magic:#8C4FB0;
+  --ax-support:#12897F; --ax-healing:#4A8F32; --ax-skills:#A8821B; --ax-questing:#B03E72;
+  --ax-popularity:#5B6478; --ax-difficulty:#87828F;
+  --f-disp:"Alegreya",Georgia,"Times New Roman",serif;
+  --f-ui:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121218; --surface:#1B1B22; --surface-2:#22222B; --surface-3:#2B2B35;
+    --ink:#ECEBF2; --ink-2:#A6A4B3; --ink-3:#7A7889;
+    --line:#31313C; --line-strong:#41414E;
+    --accent:#E8674D; --accent-ink:#F0836C; --accent-soft:rgba(232,103,77,.14);
+    --brass:#D5A94C; --brass-soft:rgba(213,169,76,.16);
+    --track:#2C2C36;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+    --ax-melee:#E2695A; --ax-ranged:#EA9440; --ax-defenses:#5A9DCE; --ax-magic:#B37BD8;
+    --ax-support:#2FBDB0; --ax-healing:#6CC85D; --ax-skills:#D8B043; --ax-questing:#DE6E9B;
+    --ax-popularity:#8B94AB; --ax-difficulty:#ABA6B4;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121218; --surface:#1B1B22; --surface-2:#22222B; --surface-3:#2B2B35;
+  --ink:#ECEBF2; --ink-2:#A6A4B3; --ink-3:#7A7889;
+  --line:#31313C; --line-strong:#41414E;
+  --accent:#E8674D; --accent-ink:#F0836C; --accent-soft:rgba(232,103,77,.14);
+  --brass:#D5A94C; --brass-soft:rgba(213,169,76,.16);
+  --track:#2C2C36;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  --ax-melee:#E2695A; --ax-ranged:#EA9440; --ax-defenses:#5A9DCE; --ax-magic:#B37BD8;
+  --ax-support:#2FBDB0; --ax-healing:#6CC85D; --ax-skills:#D8B043; --ax-questing:#DE6E9B;
+  --ax-popularity:#8B94AB; --ax-difficulty:#ABA6B4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ui);
+  font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%;
+  overflow-wrap:break-word}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.app{max-width:760px;margin:0 auto;padding:0 0 88px}
+
+/* ---------- masthead ---------- */
+.top{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);padding:14px 16px 0}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.brand h1{font-family:var(--f-disp);font-weight:800;font-size:26px;line-height:1.05;
+  margin:0;letter-spacing:-.01em;text-wrap:balance}
+.brand .n{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.tabs{display:flex;gap:2px;margin-top:12px}
+.tab{flex:1;padding:10px 8px 11px;font-size:13px;font-weight:600;text-align:center;
+  color:var(--ink-3);border-bottom:2px solid transparent;letter-spacing:.02em}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .cnt{font-family:var(--f-mono);font-size:11px;color:var(--accent);margin-left:4px}
+
+/* ---------- controls ---------- */
+.controls{padding:12px 16px 0;display:flex;flex-direction:column;gap:10px}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r);padding:0 10px}
+.search input{flex:1;border:0;background:none;padding:10px 0;font:inherit;color:var(--ink);min-width:0}
+.search input::placeholder{color:var(--ink-3)}
+.search svg{flex:none;color:var(--ink-3)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:5px 11px;border:1px solid var(--line-strong);border-radius:999px;
+  font-size:12.5px;font-weight:500;color:var(--ink-2);white-space:nowrap;background:var(--surface)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sortbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-family:var(--f-mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.05em;text-transform:uppercase}
+.sortbar select{font:inherit;font-family:var(--f-ui);font-size:12.5px;text-transform:none;
+  letter-spacing:0;color:var(--ink);background:var(--surface);border:1px solid var(--line);
+  border-radius:7px;padding:5px 8px}
+
+/* ---------- list ---------- */
+.list{margin-top:6px;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  width:100%;text-align:left;padding:12px 16px;border-bottom:1px solid var(--line)}
+.row:hover{background:var(--surface-2)}
+.row .nm{font-family:var(--f-disp);font-weight:700;font-size:19px;line-height:1.15;
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.row .tl{color:var(--ink-2);font-size:13px;margin-top:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row .meta{display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap}
+.badge{font-family:var(--f-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-2);border:1px solid var(--line-strong);border-radius:4px;padding:1px 5px}
+.badge.k{border-color:var(--accent);color:var(--accent)}
+.row .ennm{font-family:var(--f-ui);font-size:11.5px;font-weight:400;color:var(--ink-3)}
+.dhead .enname{font-size:12px;color:var(--ink-3);margin-top:6px}
+.dhead .enname b{color:var(--ink-2);font-weight:600}
+.pf{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+  gap:5px 12px;margin-top:12px}
+.pf .c{display:grid;grid-template-columns:14px 82px minmax(0,1fr) 13px;gap:4px;
+  align-items:center;height:18px}
+.pf .ic{width:13px;height:13px;display:block}
+.pf .n{font-size:10px;color:var(--ink-2);line-height:1;white-space:nowrap}
+.pf .b{height:9px;border-radius:2px;overflow:hidden;
+  background:repeating-linear-gradient(to right,var(--track) 0 calc(20% - 1px),var(--bg) calc(20% - 1px) 20%)}
+.pf .b i{display:block;height:100%;border-radius:2px}
+.pf .v{font-family:var(--f-mono);font-size:10.5px;font-weight:500;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;text-align:right;line-height:1}
+.star{flex:none;width:40px;height:40px;display:grid;place-items:center;
+  border-radius:999px;color:var(--ink-3);align-self:start}
+.star[aria-pressed="true"]{color:var(--brass);background:var(--brass-soft)}
+.star svg{width:21px;height:21px}
+.rowopen{display:block;width:100%;text-align:left;background:none;border:0;padding:0;
+  font:inherit;color:inherit;cursor:pointer;min-width:0}
+.rowopen:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.empty{padding:44px 20px;text-align:center;color:var(--ink-2)}
+.empty strong{display:block;font-family:var(--f-disp);font-size:20px;color:var(--ink);margin-bottom:6px}
+</style>
+<style>
+/* ---------- detail ---------- */
+.back{display:inline-flex;align-items:center;gap:6px;padding:12px 16px;
+  font-size:13px;font-weight:600;color:var(--accent)}
+.detail{padding:0 16px}
+.dhead{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;
+  padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.dhead h2{font-family:var(--f-disp);font-weight:800;font-size:34px;line-height:1;
+  margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance}
+.dhead .src{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3)}
+.dhead .tag{font-family:var(--f-disp);font-style:italic;font-size:17px;
+  color:var(--ink-2);margin-top:8px;line-height:1.35;max-width:60ch}
+.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:16px 0}
+.statgrid div{background:var(--surface);padding:9px 11px}
+.statgrid dt{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);margin:0}
+.statgrid dd{margin:2px 0 0;font-size:13.5px;font-weight:500;line-height:1.3}
+@media(min-width:560px){.statgrid{grid-template-columns:repeat(3,1fr)}}
+
+.sec{margin:26px 0 0}
+.sec > h3{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 10px;
+  padding-bottom:6px;border-bottom:1px solid var(--line)}
+.bullets{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.bullets li{padding-left:16px;position:relative;font-size:14.5px;line-height:1.55}
+.bullets li::before{content:"";position:absolute;left:0;top:.72em;width:9px;height:2px;
+  background:var(--line-strong);border-radius:1px}
+.bullets b{font-weight:600}
+.act{font-family:var(--f-mono);font-size:.85em;color:var(--accent);
+  letter-spacing:-.04em;padding:0 2px;white-space:nowrap}
+.dtbody{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink);
+  padding:13px 15px;border-radius:var(--r);background:var(--surface);
+  border:1px solid var(--line);border-left:3px solid var(--ax-questing)}
+.verdict{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.verdict p{margin:0;padding:11px 13px;border-radius:var(--r);font-size:14px;line-height:1.5;
+  border-left:3px solid}
+.verdict .yes{background:var(--accent-soft);border-color:var(--accent)}
+.verdict .no{background:var(--surface-2);border-color:var(--line-strong)}
+.verdict strong{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;display:block;margin-bottom:3px;color:var(--ink-2)}
+.verdict .yes strong{color:var(--accent)}
+
+/* ---------- score bars ---------- */
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:16px 112px 1fr 40px;gap:9px;align-items:center}
+.bar .ic{width:15px;height:15px;display:block}
+.bar .lb{font-size:12.5px;color:var(--ink);line-height:1.2}
+.bar .lb em{font-style:normal;font-family:var(--f-mono);font-size:8.5px;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);display:block;margin-top:1px}
+.bar .tk{height:10px;border-radius:2px;position:relative;overflow:hidden;
+  background:repeating-linear-gradient(to right,var(--track) 0 calc(20% - 1px),var(--bg) calc(20% - 1px) 20%)}
+.bar .tk i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:2px;display:block}
+.bar .vl{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);white-space:nowrap;
+  text-align:right;font-variant-numeric:tabular-nums}
+.axhelp{font-size:12px;color:var(--ink-3);margin:14px 0 0;line-height:1.45}
+.axhelp b{color:var(--ink-2);font-weight:600}
+
+/* ---------- compare ---------- */
+.cmp{padding:0 0 20px}
+.cmp-intro{padding:14px 16px 0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;padding:12px 16px 2px}
+.legend span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500}
+.legend i{width:10px;height:10px;border-radius:2px;display:block;flex:none}
+.axblock{padding:16px}
+.ax{margin-bottom:14px}
+.ax > h4{margin:0 0 5px;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.ax > h4 .ic{width:14px;height:14px;flex:none}
+.ax > h4 span{flex:1}
+.ax > h4 em{font-style:normal;color:var(--ink-3);font-size:9px}
+.grp{display:flex;flex-direction:column;gap:3px}
+.grp .g{display:grid;grid-template-columns:1fr 22px;gap:7px;align-items:center}
+.grp .gt{height:12px;border-radius:2px;overflow:hidden;
+  background:repeating-linear-gradient(to right,var(--track) 0 calc(20% - 1px),var(--bg) calc(20% - 1px) 20%)}
+.grp .gt i{display:block;height:100%;border-radius:2px}
+.grp .gv{font-family:var(--f-mono);font-size:10.5px;color:var(--ink-3);
+  text-align:right;font-variant-numeric:tabular-nums}
+
+.tblwrap{overflow-x:auto;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch}
+table.cmpt{border-collapse:collapse;font-size:13px;min-width:100%}
+table.cmpt th,table.cmpt td{border-bottom:1px solid var(--line);
+  padding:9px 11px;vertical-align:top;text-align:left}
+table.cmpt tbody th{position:sticky;left:0;z-index:2;background:var(--surface-2);
+  width:104px;min-width:104px;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:500;
+  border-right:1px solid var(--line)}
+table.cmpt thead th{position:sticky;top:0;background:var(--surface);z-index:3;
+  min-width:172px;font-family:var(--f-disp);font-size:17px;font-weight:700;
+  border-bottom:2px solid var(--ink)}
+table.cmpt thead th:first-child{left:0;z-index:4;background:var(--surface-2);
+  min-width:104px;width:104px;border-right:1px solid var(--line)}
+table.cmpt thead th .swatch{display:block;height:3px;border-radius:2px;margin-bottom:6px}
+table.cmpt td{min-width:172px;line-height:1.45;color:var(--ink-2)}
+table.cmpt td.hi{color:var(--ink);font-weight:500}
+table.cmpt ul{margin:0;padding-left:15px}
+table.cmpt li{margin-bottom:4px}
+.scrollhint{font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3);padding:8px 16px 0}
+
+/* ---------- about ---------- */
+.about{margin:30px 16px 0;padding:16px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:var(--r)}
+.about h3{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);margin:0 0 10px}
+.about p{margin:0 0 10px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.about p:last-child{margin-bottom:0}
+.about b{color:var(--ink);font-weight:600}
+.about a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.langlink{border-top:1px solid var(--line);padding-top:10px;margin-top:12px!important}
+.ax-key{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:9px}
+.ax-key span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink)}
+.ax-key svg{width:14px;height:14px;flex:none}
+.note{border-left:3px solid var(--brass);background:var(--brass-soft);
+  padding:11px 13px;border-radius:0 var(--r) var(--r) 0;margin:0 0 14px}
+.note p{color:var(--ink);margin:0;font-size:13px;line-height:1.5}
+.note strong{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--brass);display:block;margin-bottom:3px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Códice de Clases de Pathfinder</h1>
+      <span class="n" id="rosterN">29 clases</span>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabBrowse" aria-selected="true">Clases</button>
+      <button class="tab" role="tab" id="tabCompare" aria-selected="false">Favoritas<span class="cnt" id="favCnt">0</span></button>
+    </div>
+  </header>
+
+  <!-- BROWSE -->
+  <section id="viewBrowse">
+    <div class="controls">
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Busca clases, mecánicas, sensaciones&hellip;" autocomplete="off">
+      </label>
+      <div class="chips" id="chips"></div>
+      <div class="sortbar">
+        <span id="resultN">29 mostradas</span>
+        <label>Orden <select id="sort"></select></label>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+    <div class="about">
+      <h3>Sobre este códice</h3>
+      <p><b>Todas las clases base de Pathfinder Segunda Edición</b> a fecha de <i>Impossible Magic</i> (julio de 2026): 29 en total. Cada entrada cubre el motor mecánico que manejas turno a turno, el personaje que la clase te pide interpretar y qué hace con su <b>tiempo libre</b> entre aventuras.</p>
+      <p>Cada clase muestra también su <b>nombre en inglés</b>, porque los Archivos de Nethys y la mayoría de herramientas están en ese idioma. La búsqueda acepta ambos: escribe <i>fighter</i> o <i>guerrero</i>.</p>
+      <p>Los <b>símbolos de acción</b> siguen la notación del juego: <span class="act">&#9670;</span> una acción, <span class="act">&#9670;&#9670;</span> dos acciones, <span class="act">&#9670;&#9670;&#9670;</span> tres acciones, <span class="act">&#8635;</span> reacción, <span class="act">&#9671;</span> acción libre.</p>
+      <p><b>Las diez barras</b> proceden de <a href="https://classfinder2e.com/">Classfinder 2e</a> y van de 0 a 5. Cada eje conserva su color y su icono allá donde aparece, para que puedas leer la silueta de una clase sin mirar las etiquetas: <span class="ax-key" id="axKey"></span></p>
+      <p>Ocho de los diez son capacidades, donde una barra más larga es mejor. Los dos últimos no lo son, y van dibujados a propósito en grises apagados para que una barra alta nunca se lea como &laquo;más fuerte&raquo;: <b>Dificultad</b> es un <i>coste</i> &mdash; cuánto te exige la clase &mdash; y <b>Popularidad</b> es simplemente con qué frecuencia se juega.</p>
+      <p id="provenance"></p>
+      <p class="langlink">Edición en inglés: <a href="https://claude.ai/code/artifact/b83190ae-13d3-4896-b12d-d45c5109d0d8">Pathfinder Class Codex</a></p>
+    </div>
+  </section>
+
+  <!-- DETAIL -->
+  <section id="viewDetail" class="hidden">
+    <button class="back" id="back">&#8592; Todas las clases</button>
+    <div class="detail" id="detailBody"></div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="viewCompare" class="hidden">
+    <div class="cmp" id="cmpBody"></div>
+  </section>
+</div>
+<script>
+"use strict";
+
+var MAX=5;
+var AXES=[
+ {k:"melee",     n:"Cuerpo a cuerpo", d:"Defenderte en la distancia corta."},
+ {k:"ranged",    n:"Distancia",       d:"Aportar desde lejos."},
+ {k:"defenses",  n:"Defensas",        d:"Armadura, salvaciones y seguir en pie."},
+ {k:"magic",     n:"Magia",           d:"Acceso a conjuros y efectos mágicos."},
+ {k:"support",   n:"Apoyo",           d:"Mejorar a los aliados y sus turnos."},
+ {k:"healing",   n:"Curación",        d:"Devolver puntos de golpe y limpiar estados."},
+ {k:"skills",    n:"Habilidades",     d:"Amplitud y profundidad de competencia en habilidades."},
+ {k:"questing",  n:"Aventura",        d:"Resolver problemas fuera del combate."},
+ {k:"popularity",n:"Popularidad", kind:"meta", d:"Con qué frecuencia se juega la clase: ni bueno ni malo."},
+ {k:"difficulty",n:"Dificultad",  kind:"cost", d:"Cuánto exige la clase a quien la juega."}
+];
+
+var CLASSES=[
+{id:"alchemist",name:"Alquimista",en:"Alchemist",src:"Player Core 2",rarity:"Común",type:"Híbrido",roles:["Apoyo","Utilidad","Atacante"],
+ hp:"8",key:"Inteligencia",cast:"Ninguno — alquimia, no conjuros",armor:"Ligera y media",sub:"Campo de investigación",
+ tag:"Un laboratorio con piernas que gana los combates por haber fabricado esta mañana justo lo que hacía falta.",
+ mech:[
+  "No lanzas conjuros: <b>fabricas</b>. Durante las preparaciones diarias, la <b>Alquimia avanzada</b> convierte tu formulario en un lote de elixires, bombas, mutágenos y venenos infundidos: gratuitos, tuyos, y desaparecen en la siguiente preparación.",
+  "Los <b>viales versátiles</b> son tu presupuesto de improvisación: lánzalos como bombas o gasta uno en <span class=\"act\">&#9670;</span> <b>Alquimia rápida</b> para crear al instante cualquier fórmula que conozcas, a cambio de que el objeto se agote enseguida.",
+  "Tu <b>campo de investigación</b> —Bombardero, Cirujano, Mutagenista o Toxicólogo— decide si ese motor apunta a volar cosas por los aires, curar, remodelar tu propio cuerpo o envenenar.",
+  "Tu <b>CD de clase</b> gobierna las salvaciones contra tus bombas y elixires, así que la Inteligencia te sirve a la vez de atributo ofensivo y de habilidad.",
+  "Aquí Fabricar es una competencia de combate, no una habilidad de trasfondo, y la clase escala haciendo más potentes tus viales en vez de dándote conjuros nuevos."],
+ rp:[
+  "Eres el científico loco del grupo: sin miedo al riesgo, con una curiosidad inagotable por saber qué hace cada cosa, y siempre trasteando con algo.",
+  "En lo social eres quien sabe demasiado sobre venenos y enfermedades: útil, y ligeramente inquietante.",
+  "La gente te confunde constantemente con un mago, cosa que te irrita, o da por hecho que estás a un experimento fallido del desastre, que cuesta más rebatir."],
+ dt:"Tus ratos muertos son horas de laboratorio. Entre aventuras estás inclinado sobre la mesa de trabajo preparando elixires y montando bombas, refinando fórmulas viejas y persiguiendo nuevas: el tiempo libre es más investigación, no descanso.",
+ yes:"Te gusta el inventario como rompecabezas, quieres una respuesta para casi cualquier situación y disfrutas siendo quien dice «espera, tengo una de esas».",
+ no:"Quieres abrir la hoja de personaje y golpear algo. El alquimista tiene más piezas móviles que ninguna otra clase del juego.",
+ s:{melee:2,ranged:3,defenses:3,magic:0,support:5,healing:4,skills:4,questing:3,popularity:2,difficulty:5}},
+
+{id:"animist",name:"Animista",en:"Animist",src:"War of Immortals",rarity:"Común",type:"Lanzador",roles:["Apoyo","Controlador"],
+ hp:"8",key:"Sabiduría",cast:"Divina (preparada + espontánea)",armor:"Ligera",sub:"Apariciones",
+ tag:"Un médium que se vincula con espíritus demasiado etéreos para tocar el mundo, y les presta un cuerpo.",
+ mech:[
+  "Cada día te sintonizas con dos <b>apariciones</b> —más tarde tres, luego cuatro— y designas una como principal. Son espíritus que no pueden afectar al mundo físico sin ti.",
+  "Eso te da un doble motor poco habitual: <b>preparas</b> conjuros divinos como un clérigo pequeño y, aparte, obtienes un repertorio <b>espontáneo</b> procedente de las apariciones con las que estés sintonizado hoy.",
+  "Tu aparición principal te concede un <b>conjuro de vasija</b> de enfoque único, y con el tiempo la capacidad de transformarte en el <b>avatar</b> de ese espíritu.",
+  "Como la sintonización se reinicia cada mañana, tu caja de herramientas cambia de verdad día a día: un espíritu guerrero no se parece en nada a un espíritu de conocimiento.",
+  "Recompensa a quien disfrute leyendo un menú de opciones en el desayuno y montando la jornada alrededor de lo que parece que va a pedir la aventura."],
+ rp:[
+  "Eres un puente entre el mundo mortal y el espiritual: en parte consejero, en parte médium, en parte diplomático de aquello que nadie más percibe.",
+  "Hablas con —y a veces <i>por</i>— entidades que los demás no ven. Interpretarlo bien pasa por dejar que la aparición tiña tu voz y aquello en lo que te fijas.",
+  "Pensar en historias y en escalas de tiempo largas puede parecer distancia o frialdad, aunque estés profundamente atento a quienes te rodean."],
+ dt:"Gravitas hacia donde tus espíritus sintonizados están más fuertes o más en paz: cuidando cementerios, recorriendo bosques antiguos o pasando largas temporadas en ríos y mares. Los animistas ligados a espíritus de sabiduría frecuentan en cambio bibliotecas y templos, ahondando en la cara erudita del vínculo.",
+ yes:"Quieres lanzamiento preparado y espontáneo a la vez, y un personaje que va acompañado dentro de su propia cabeza.",
+ no:"Quieres un lanzador sencillo. Dos motores de conjuros más una elección diaria de sintonización es mucha superficie que gestionar.",
+ s:{melee:2,ranged:3,defenses:3,magic:4,support:3,healing:4,skills:3,questing:2,popularity:4,difficulty:5}},
+
+{id:"barbarian",name:"Bárbaro",en:"Barbarian",src:"Player Core 2",rarity:"Común",type:"Marcial",roles:["Atacante","Defensor"],
+ hp:"12",key:"Fuerza",cast:"Ninguno",armor:"Ligera y media",sub:"Instinto",
+ tag:"La mayor reserva de puntos de golpe del juego, apuntada hacia lo que tenga delante.",
+ mech:[
+  "<span class=\"act\">&#9670;</span> <b>Furia</b> te da puntos de golpe temporales y +2 al daño en Ataques cuerpo a cuerpo, y te cierra las acciones de concentración que no sean de furia. <b>Temperamento vivo</b> te permite entrar en ella como acción libre al empezar el combate.",
+  "<b>12 puntos de golpe por nivel</b> es el techo del sistema. Sumado a la maestría en Fortaleza y a las resistencias de la furia, acabas encajando daño que acabaría con cualquier otro.",
+  "Tu <b>Instinto</b> —Animal, Dragón, Furia, Gigante, Espíritu, Superstición— tiñe la furia, añade resistencias y abre su propia cadena de dotes, con un anatema que romper te cuesta la furia.",
+  "Las defensas son desiguales a propósito: Fortaleza y Voluntad fuertes, Reflejos flojos y poca inversión en CA, compensada por pura resistencia.",
+  "Las dotes añaden sobre todo capacidades ligadas a la furia y golpes más grandes, no sistemas nuevos, así que el turno se mantiene legible."],
+ rp:[
+  "El bárbaro resuelve por la vía directa: derribar la puerta, meterse en el túnel inundado, intimidar al guardia en vez de negociar.",
+  "Furia no es lo mismo que enfado. Muchos bárbaros canalizan duelo o concentración antes que ira, y bastantes son genuinamente astutos: la clase no implica ser corto de luces.",
+  "Tus aliados se apoyan en tu valor y tu aguante; los desconocidos te toman por un bruto incivilizado, normalmente una sola vez."],
+ dt:"Los bárbaros no están hechos para quedarse quietos. El tiempo libre es otra arena para la reputación: correrse juergas en tabernas y agrandar la leyenda de tus hazañas, reclutar seguidores y, para los ambiciosos, ir camino de convertirse en señor de la guerra por derecho propio.",
+ yes:"Quieres números grandes, una barra de vida enorme y un turno que puedas ejecutar sin diagrama de flujo.",
+ no:"Quieres opciones tácticas a mitad de combate, o hablar para salir de los problemas mientras estás en furia: no puedes.",
+ s:{melee:5,ranged:2,defenses:4,magic:0,support:1,healing:0,skills:1,questing:1,popularity:4,difficulty:1}},
+
+{id:"bard",name:"Bardo",en:"Bard",src:"Player Core",rarity:"Común",type:"Lanzador",roles:["Apoyo","Controlador"],
+ hp:"8",key:"Carisma",cast:"Oculta (espontánea)",armor:"Ligera",sub:"Musa",
+ tag:"El mejor multiplicador de fuerza del juego: un lanzador oculto completo cuyas canciones mejoran a todos los demás.",
+ mech:[
+  "Las <b>composiciones</b> son conjuros de enfoque lanzados mediante Interpretar, que superponen mejoras, penalizaciones y control sobre un repertorio real. <span class=\"act\">&#9670;</span> Himno valeroso sube el ataque y el daño de todo el grupo.",
+  "Eres un lanzador <b>oculto espontáneo</b>, y los <b>conjuros distintivos</b> te dejan intensificar unos cuantos favoritos con total libertad: el chasis más indulgente del juego.",
+  "La lista oculta es la lista de los problemas raros: control mental, ilusiones, miedo, maldiciones y algunos de los bloqueos a un solo objetivo más afilados que existen.",
+  "Tu <b>Musa</b> —Enigma, Maestro, Polímata, Guerrero— te concede un truco distintivo y abre una cadena de dotes.",
+  "Tu competencia con armas es mejor que la de casi cualquier lanzador, así que un bardo que quiera estar en la refriega puede estarlo."],
+ rp:[
+  "Los bardos son narradores, eruditos de saberes ocultos y operadores sociales tanto como músicos: el laúd es opcional.",
+  "En escenas sociales persuades, engañas o amenazas con la misma soltura; explorando, eres la fuente de leyendas y contexto del grupo.",
+  "La gente te subestima como «solo un músico» y luego se queda de piedra con lo que realmente sabes y puedes hacer."],
+ dt:"El tiempo libre es donde se construye la reputación: actuar por dinero y prestigio, cultivar mecenas, convertir las semanas muertas en una carrera. Un bardo con suficiente éxito puede ver sus técnicas estudiadas en un colegio bárdico: una afición que le sobrevive.",
+ yes:"Quieres ser la razón por la que el grupo gana sin necesitar los números más altos en tu propia hoja, y disfrutas hablando.",
+ no:"Quieres el protagonismo en daño, o te incomoda que tu mejor aportación sea un bonificador en los dados de otro.",
+ s:{melee:2,ranged:3,defenses:2,magic:4,support:5,healing:1,skills:3,questing:5,popularity:5,difficulty:3}},
+
+{id:"champion",name:"Campeón",en:"Champion",src:"Player Core 2",rarity:"Común",type:"Marcial",roles:["Defensor","Apoyo"],
+ hp:"10",key:"Fuerza o Destreza",cast:"Conjuros de enfoque divinos",armor:"Todas, incl. pesada",sub:"Deidad y causa",
+ tag:"Armadura pesada, un juramento vinculante y una reacción que castiga a quien haga daño a los tuyos.",
+ mech:[
+  "Tu <b>reacción de campeón</b>, que te da tu causa, es la clase. El Golpe retributivo del paladín devuelve el golpe a quien hiera a un aliado a tu lado; otras causas rescatan, amortiguan el daño o exigen sumisión.",
+  "Tienes <b>Bloquear con escudo</b> desde nivel 1, competencia con toda la armadura y, al final del recorrido, la mejor progresión de armadura y salvaciones de cualquier clase.",
+  "Los conjuros de enfoque de <b>devoción</b> —<i>imposición de manos</i> el primero— te convierten en un sanador de emergencia competente además del personaje más difícil de tumbar.",
+  "Tu <b>deidad</b>, tu <b>causa</b> y tu santificación traen edictos y anatemas que condicionan el juego de verdad: romperlos te deja sin capacidades divinas hasta que expíes.",
+  "El precio es la ofensiva. Estás construido para proteger a otros, y tu daño lo refleja."],
+ rp:[
+  "Un campeón representa visiblemente a su deidad, para bien o para mal. Los desconocidos proyectan sobre ti su opinión de ese dios antes de que abras la boca.",
+  "El Remaster liberó a la clase del alineamiento estricto, así que importa más la convicción que el papeleo, pero el juramento sigue teniendo dientes.",
+  "Se juega bien dejando que el código te cueste algo. Un campeón que nunca se enfrenta a elegir entre ganar y mantener su palabra no se está interpretando."],
+ dt:"Buena parte del tiempo libre se va en oración solemne, contemplación y entrenamiento duro, más las obligaciones que impongan los edictos de la causa. Aun así, casi todos reservan tiempo real para un oficio o afición corriente, aunque solo sea para sentirse personas y no símbolos.",
+ yes:"Quieres ser el muro, te gusta el juego reactivo y quieres un personaje cuya moral sea estructural.",
+ no:"Quieres daño máximo, o las restricciones de conducta escritas en las reglas te parecen una atadura más que un aliciente.",
+ s:{melee:3,ranged:2,defenses:5,magic:2,support:3,healing:2,skills:1,questing:2,popularity:5,difficulty:2}},
+
+{id:"cleric",name:"Clérigo",en:"Cleric",src:"Player Core",rarity:"Común",type:"Lanzador",roles:["Apoyo","Controlador"],
+ hp:"8",key:"Sabiduría",cast:"Divina (preparada)",armor:"Según la doctrina",sub:"Doctrina",
+ tag:"El lanzador divino por definición, y todavía el sanador más eficiente de Pathfinder.",
+ mech:[
+  "Tu <b>fuente divina</b> te entrega cada día un montón de conjuros de <i>curar</i> (o <i>dañar</i>) extra, por encima de tus espacios normales. Curación gratis sobre una lista completa: por eso a un clérigo nunca le faltan cosas que hacer.",
+  "La <b>doctrina</b> parte la clase en dos: el clérigo enclaustrado es mejor lanzador y peor combatiente; el sacerdote guerrero suma armadura y armas y puede pelear de verdad mientras lanza.",
+  "Eres un lanzador <b>preparado</b>, así que la mañana es una decisión real: un clérigo bien informado llega con el conjuro exacto y uno descuidado no.",
+  "Tu <b>deidad</b> es mecánica, no decorativa: arma favorecida, conjuros añadidos y conjuros de enfoque de dominio salen todos de ahí.",
+  "<span class=\"act\">&#9670;&#9670;&#9670;</span> Curar a tres acciones es una explosión que alcanza a todo el grupo y ha salvado más combates que ningún otro conjuro del juego."],
+ rp:[
+  "Los clérigos viven su fe a diario: visitan templos, citan escrituras, leen los símbolos religiosos para el grupo.",
+  "En lo social eres el diplomático y el detector de mentiras, y la persona con la que otras autoridades religiosas aceptan hablar.",
+  "El anatema es real y lo arbitra el DJ. El dios que te dio poder tiene opiniones, y tarde o temprano tu grupo propondrá algo que esas opiniones prohíben."],
+ dt:"Los clérigos dedican el tiempo libre al servicio: oficiar ritos en un templo, viajar para difundir la palabra, investigar las escrituras, celebrar días sagrados. Algunos van más lejos y fundan un templo propio en vez de limitarse a asistir al de otro.",
+ yes:"Quieres ser imprescindible, te gusta el lanzamiento preparado como ejercicio de planificación y quieres que la fe forme parte del personaje.",
+ no:"Te molesta ser el sanador designado, o prefieres no tener una deidad mirándote por encima del hombro.",
+ s:{melee:2,ranged:2,defenses:2,magic:4,support:3,healing:5,skills:2,questing:2,popularity:5,difficulty:3}},
+
+{id:"commander",name:"Comandante",en:"Commander",src:"Battlecry!",rarity:"Común",type:"Marcial",roles:["Apoyo","Controlador"],
+ hp:"8",key:"Inteligencia",cast:"Ninguno",armor:"Todas, incl. pesada",sub:"Tácticas y estandarte",
+ tag:"Un general de campo que gasta sus turnos en dar acciones extra a los demás.",
+ mech:[
+  "Durante las preparaciones diarias entrenas a tus <b>compañeros de escuadra</b>, y en combate emites <b>tácticas</b> —señalizadas con tu <b>estandarte</b> personal— que permiten a esos aliados responder con maniobras adicionales.",
+  "Es un multiplicador real de economía de acciones: tu daño verdadero suele aparecer en la hoja de otra persona, mediante una reacción que casi no le cuesta nada al grupo.",
+  "También eres competente por tu cuenta —armadura completa, armas marciales y <b>Bloquear con escudo</b>—, pero la fuerza de la clase está en preparar a los aliados y luego cantar la táctica correcta en el momento correcto.",
+  "La Inteligencia guía la planificación, y un abanico amplio de habilidades tácticas te convierte también en el organizador del grupo fuera del combate.",
+  "Se juega casi como un general de estrategia en tiempo real injertado en la economía de tres acciones de Pathfinder."],
+ rp:[
+  "Los comandantes piensan con varias jugadas de antelación y toman el mando de conversaciones y negociaciones por puro instinto.",
+  "Te exiges un nivel brutal, incluso por errores que nadie más ha notado.",
+  "Los demás respetan la cabeza táctica pero a veces te encuentran mandón, y los académicos subestiman cuánto estudio real hay detrás de las órdenes."],
+ dt:"Los comandantes hacen contactos más que descansar: cultivan relaciones entre soldados y aristócratas por igual para conseguirle al grupo trabajos prometedores. Muchos mantienen la mente afilada con ajedrez, draj, go o conquista imperial, tratando los juegos de estrategia como entrenamiento de pretemporada.",
+ yes:"Eres quien ya le dice a todo el mundo lo que tiene que hacer, y te gustaría que las reglas lo recompensaran.",
+ no:"Quieres gloria personal, o tu grupo lleva mal que le dirijan en combate. Esta clase necesita aliados dispuestos.",
+ s:{melee:3,ranged:3,defenses:3,magic:0,support:5,healing:1,skills:4,questing:3,popularity:3,difficulty:4}},
+
+{id:"druid",name:"Druida",en:"Druid",src:"Player Core",rarity:"Común",type:"Lanzador",roles:["Controlador","Apoyo","Utilidad"],
+ hp:"8",key:"Sabiduría",cast:"Primigenia (preparada)",armor:"Ligera y media",sub:"Orden druídica",
+ tag:"Lanzamiento primigenio completo, con una orden que puede hacerte sanador, tormenta u oso.",
+ mech:[
+  "La <b>lista primigenia</b> es la elemental y natural: buen daño de área, curación real y un banquillo profundo de control del terreno y convocaciones.",
+  "Tu <b>orden</b> es la bifurcación. Animal se apoya en el cambio de forma, Hoja en la curación y la magia vegetal, Tormenta en la destrucción elemental, Salvaje en una mezcla de todo, y cada una concede su conjuro de orden y sus dotes.",
+  "<b>Bloquear con escudo</b> desde nivel 1 te da más resistencia en primera línea que a la mayoría de lanzadores, si construyes hacia ahí.",
+  "Eres un lanzador <b>preparado</b> con una lista muy amplia, así que el druida premia leer la situación la noche anterior más que casi ninguna otra clase.",
+  "Según orden y dotes puedes acabar como combatiente cuerpo a cuerpo transformado, artillero elemental, convocador o sanador: uno de los lanzadores más flexibles del juego."],
+ rp:[
+  "Los druidas abogan por la naturaleza, y la versión interesante empuja acuerdos donde civilización y naturaleza convivan, en vez de elegir bando sin más.",
+  "El anatema es afilado y concreto: expoliar la naturaleza, consumir recursos en exceso y enseñar el <b>Cantosilvestre</b> secreto a los de fuera están prohibidos.",
+  "Los demás te ven como ermitaño huraño o como sacerdote capaz de dominar lo salvaje a voluntad. Casi todos los druidas se ven a sí mismos como custodios y mediadores, no como amos."],
+ dt:"Muchos druidas fabrican objetos mágicos y pociones, pero otros tantos están fuera cuidando un pedazo de naturaleza: haciéndose amigos de las bestias locales, sanando el daño del asentamiento que avanza. Algunos enseñan agricultura sostenible o ganadería en los alrededores, difundiendo sus valores junto con las técnicas.",
+ yes:"Quieres espectáculo elemental, una lista amplia y útil, y una orden que te dé una segunda identidad en la que crecer.",
+ no:"Quieres las cajas de herramientas arcana u oculta, o prefieres no lidiar con la planificación del lanzador preparado.",
+ s:{melee:2,ranged:3,defenses:3,magic:4,support:2,healing:4,skills:2,questing:4,popularity:2,difficulty:3}},
+
+{id:"exemplar",name:"Ejemplar",en:"Exemplar",src:"War of Immortals",rarity:"Raro",type:"Marcial",roles:["Atacante","Apoyo"],
+ hp:"10",key:"Fuerza o Destreza",cast:"Divina (poderes de icono)",armor:"Ligera y media",sub:"Iconos y epíteto",
+ tag:"Un mortal que porta una chispa de divinidad sin reclamar: suya, no de ningún dios.",
+ mech:[
+  "Eliges <b>tres iconos</b> a nivel 1 —un arma, un objeto que llevas puesto, un rasgo de tu propio cuerpo—, cada uno un auténtico objeto mítico con nombre e historia.",
+  "Solo un icono contiene la chispa a la vez: esa es su <b>inmanencia</b>, un beneficio pasivo. Después puedes quemar un efecto único de <b>trascendencia</b> a través de él, lo que expulsa la chispa hacia otro icono.",
+  "El bucle es una batería que se mueve entre tres zócalos: aparca la chispa donde ayude, cóbrala en el momento justo, desplázala y repite. Secuenciarlo antes de un turno grande es toda la destreza de la clase.",
+  "Los <b>epítetos</b> —Raíz, Dominio, Soberanía— construyen una leyenda y un título personales con beneficios mecánicos asociados.",
+  "<b>Golpes humildes</b> hace que las armas sencillas golpeen muy por encima de su peso, así que tu lanza legendaria puede ser sinceramente una lanza."],
+ rp:[
+  "No eres el sirviente de un dios. El poder es tuyo, sin reclamar, y el juego lo dice en voz alta: una postura completamente distinta a la del clérigo o el campeón.",
+  "Los iconos exigen trasfondo como mecánica. ¿Por qué es legendaria esa hoja? ¿De quién es esa cicatriz? La clase no funciona hasta que respondes.",
+  "La gente espera que resuelvas cualquier crisis, y eso deriva en aislamiento real: los aliados se apoyan demasiado, los desconocidos leen tu porte como arrogancia y las expectativas pesan."],
+ dt:"A los ejemplares les cuesta quedarse quietos: la inactividad no le sienta bien a quien está construyendo una leyenda. Si les dejas a su aire, salen a buscar más hazañas: cazar criaturas peligrosas, competir en pruebas atléticas, perseguir rumores de artefactos perdidos.",
+ yes:"Quieres una fantasía de héroe mítico, decisiones reales en combate y casi nada de contabilidad diaria.",
+ no:"Quieres un personaje humilde, o uno cuyas decisiones interesantes ocurran en la preparación y no a mitad del turno.",
+ s:{melee:4,ranged:3,defenses:4,magic:0,support:2,healing:1,skills:2,questing:2,popularity:3,difficulty:3}},
+
+{id:"fighter",name:"Guerrero",en:"Fighter",src:"Player Core",rarity:"Común",type:"Marcial",roles:["Atacante","Defensor"],
+ hp:"10",key:"Fuerza o Destreza",cast:"Ninguno",armor:"Todas, incl. pesada",sub:"Ninguna — tu arma es la elección",
+ tag:"El personaje más certero del juego, y el turno más limpio de Pathfinder.",
+ mech:[
+  "Eres experto en armas sencillas y marciales a nivel 1 y <b>legendario</b> en un grupo favorecido al final. Esa precisión se acumula en más impactos, más críticos y todo lo que se deriva de ellos.",
+  "<span class=\"act\">&#8635;</span> <b>Golpe reactivo</b> desde nivel 1 vuelve peligroso el espacio a tu alrededor y convierte el movimiento descuidado del enemigo en daño gratis.",
+  "<b>Flexibilidad de combate</b> te permite intercambiar una dote distinta cada día para responder al problema concreto de esa jornada: el guerrero se adapta entre aventuras mucho más de lo que sugiere su fama.",
+  "No hay recurso ni truco central. Hay, en cambio, una lista profunda de dotes de maniobras, posturas y combos que encadenan de verdad: derribo, luego aprovechar la caída, luego rematar.",
+  "Tampoco hay subclase: tu grupo de armas <i>es</i> la subclase, y espadón, arco y espada y escudo se juegan como tres clases distintas."],
+ rp:[
+  "Los guerreros son profesionales. Conocen su equipo al dedillo, respetan la pericia allá donde la encuentran y tienen poca paciencia para soluciones cerebrales cuando existe una directa.",
+  "No hay origen sobrenatural, lo que convierte esto en el lienzo más amplio del juego: duelista, mercenario, sargento de la guardia, leyenda retirada, guardaespaldas.",
+  "Los demás te juzgan como puro músculo hasta que ven la profundidad técnica detrás del manejo del arma."],
+ dt:"Los guerreros dedican el tiempo libre al trabajo manual o a reparar y fabricar armamento, y cuando una técnica cae en desuso, es el momento de reentrenar hacia otra. Uno con reputación de verdad puede ir más lejos y fundar una organización o una fortaleza que lleve su nombre.",
+ yes:"Eres nuevo en Pathfinder, o tienes experiencia y simplemente quieres ser buenísimo en lo que haces cada asalto.",
+ no:"Quieres magia o herramientas para resolver problemas fuera del combate integradas en la clase, en vez de compradas con habilidades.",
+ s:{melee:5,ranged:4,defenses:4,magic:0,support:2,healing:0,skills:2,questing:1,popularity:5,difficulty:1}}
+];
+
+CLASSES.push(
+{id:"guardian",name:"Guardián",en:"Guardian",src:"Battlecry!",rarity:"Común",type:"Marcial",roles:["Defensor","Apoyo"],
+ hp:"12",key:"Fuerza",cast:"Ninguno",armor:"Todas, incl. pesada",sub:"Ninguna a nivel 1",
+ tag:"Un tanque dedicado cuyo diseño entero consiste en que el peligro pase primero por ti.",
+ mech:[
+  "Llevar armadura media o pesada te da <b>resistencia pasiva al daño físico</b>: te reducen el golpe antes de que ocurra nada más.",
+  "<span class=\"act\">&#9670;</span> <b>Provocar</b> te convierte en el objetivo obviamente correcto y castiga a los enemigos que ataquen a cualquier otro.",
+  "<span class=\"act\">&#8635;</span> <b>Interceptar ataque</b> te deja meterte físicamente y encajar un golpe dirigido a un aliado cercano. Muy pocas clases pueden decir «no» en nombre de otro.",
+  "<b>12 puntos de golpe por nivel</b> y, con el tiempo, la posibilidad de cambiar Destreza por el bonificador de objeto de tu armadura en Reflejos, te hacen dificilísimo de sacar de un combate.",
+  "El daño es deliberadamente modesto. Estás negándole buenos objetivos al enemigo, no compitiendo por bajas."],
+ rp:[
+  "Los guardianes se enorgullecen visiblemente de encajar golpes ajenos, y suelen bromear con ello en vez de quejarse.",
+  "Desconfías de quien esté fuera de tu círculo y estás más cómodo en un campo de batalla donde amigo y enemigo están claros.",
+  "Tus aliados se sienten sinceramente más seguros a tu lado, incluso los que no entienden por qué provocar a un monstruo a propósito es un plan."],
+ dt:"La armadura y los escudos sufren mucho sobre el terreno, así que el tiempo libre empieza por reparar y mantener. Con lo que sobra, muchos guardianes hacen trabajo manual o sirven como guardia del pueblo: proteger es sencillamente el oficio que conocen.",
+ yes:"Disfrutas de verdad protegiendo a los demás y quieres que esa sea tu aportación, no un efecto secundario.",
+ no:"Mides una buena sesión en daño infligido. El guardián renuncia a la ofensiva casi por completo.",
+ s:{melee:3,ranged:1,defenses:5,magic:0,support:3,healing:0,skills:2,questing:1,popularity:4,difficulty:2}},
+
+{id:"gunslinger",name:"Pistolero",en:"Gunslinger",src:"Guns &amp; Gears",rarity:"Infrecuente",type:"Marcial",roles:["Atacante"],
+ hp:"8",key:"Destreza",cast:"Ninguno",armor:"Ligera y media",sub:"Senda del pistolero",
+ tag:"Maestría a distancia de precisión, un arma que se puede encasquillar y más estilo del estrictamente necesario.",
+ mech:[
+  "Eres el equivalente a distancia del guerrero: la mejor competencia con armas de fuego y ballestas, y <b>Precisión del pistolero</b> añade buen daño con las que no son de repetición.",
+  "Tu <b>senda</b> —Errante, Pistolero de duelo, Tirador, Vanguardia y otras— fija tus <b>gestas</b> distintivas y una acción de recarga propia que integra el recargar en algo útil.",
+  "Los <b>encasquillamientos</b> son reales: un arma de fuego sucia puede atascarse con una mala tirada plana, lo que mete tensión de verdad en un combate largo y convierte el mantenimiento en parte del personaje.",
+  "Las armas de fuego golpean desproporcionadamente fuerte en crítico, así que la clase se construye alrededor de acertar menos disparos pero más grandes.",
+  "Más allá de gestionar el encasquillamiento no hay un truco unificador: es la senda elegida la que aporta disparos calculados, tiroteo en movimiento o emboscadas."],
+ rp:[
+  "Los pistoleros son fanáticos del equipo, orgullosos de la mecánica de su arma, y gravitan hacia donde hay conflicto y reputación.",
+  "Las armas de fuego en Golarion son raras, ruidosas y algo desprestigiadas. Llevar una te marca, y siempre hay una historia sobre de dónde salió.",
+  "Los demás dan por hecho que eres un tirador de un solo truco, lo que infravalora tanto tu vigilancia como tu aguante."],
+ dt:"Evitar que un arma se encasquille cuesta trabajo real, así que el tiempo libre es fabricar munición y limpiar armas como rutina. Aparte, muchos buscan un oficio que encaje —herrería, ingeniería, entrar en la guardia— y son tan propensos a ir de pueblo en pueblo como a asentarse en uno.",
+ yes:"Quieres impactos únicos, grandes y dramáticos, y un personaje con auténtica chulería.",
+ no:"En tu mesa no se usan armas de fuego, o la gestión de recarga y encasquillamiento te resulta tediosa más que táctica.",
+ s:{melee:2,ranged:5,defenses:3,magic:1,support:2,healing:0,skills:2,questing:2,popularity:1,difficulty:2}},
+
+{id:"inventor",name:"Inventor",en:"Inventor",src:"Guns &amp; Gears",rarity:"Infrecuente",type:"Marcial",roles:["Atacante","Utilidad","Apoyo"],
+ hp:"8",key:"Inteligencia",cast:"Ninguno",armor:"Ligera y media",sub:"Innovación",
+ tag:"Un prototipo brillante que crece contigo y que está siempre a punto de estallar.",
+ mech:[
+  "Construyes una única <b>innovación</b> —armadura, arma o compañero constructo— que sube de nivel contigo y admite modificaciones que puedes <b>Reconfigurar</b> entre aventuras.",
+  "<span class=\"act\">&#9670;</span> <b>Sobremarcha</b> es una prueba de Fabricar que añade daño si tiene éxito y que puede estallarte literalmente en la cara con un fallo crítico. Aquí Fabricar es una estadística de combate, no de trasfondo.",
+  "Las acciones <b>inestables</b>, como Explotar, fuerzan deliberadamente la innovación más allá de lo seguro a cambio de un premio mayor y del riesgo real de romperla.",
+  "Eso te da daño de área sobre un chasis marcial, lo cual es infrecuente y muy útil.",
+  "Es la expresión más clara en Pathfinder de riesgo alto y recompensa alta canalizados a través de una prueba de habilidad."],
+ rp:[
+  "Los inventores tratan el combate como banco de pruebas. Ganar importa menos que los datos recogidos, que es una prioridad genuinamente rara y divertida de interpretar.",
+  "Divagas con entusiasmo sobre minucias técnicas, llevas encima la mugre del taller y persigues mecenazgos para financiar experimentos cada vez más heterodoxos.",
+  "Quien te mira alterna entre maravillarse con los resultados y preocuparse en voz baja por que el próximo cacharro salte por los aires."],
+ dt:"Los inventores dedican el tiempo libre a idear diseños y construirlos con esfuerzo, revisando invenciones pasadas con los datos recogidos sobre el terreno. Muchos trabajan como herrero o manitas local; otros mantienen un taller a las afueras, donde los golpes, las chispas y alguna pequeña explosión llaman menos la atención.",
+ yes:"Te encanta la idea de una invención distintiva que afinas durante toda la campaña, y disfrutas de una apuesta calculada.",
+ no:"Quieres fiabilidad. Sobremarcha puede fallar y las acciones inestables pueden romperte el objeto central a mitad de combate.",
+ s:{melee:3,ranged:3,defenses:3,magic:0,support:2,healing:1,skills:4,questing:2,popularity:1,difficulty:3}},
+
+{id:"investigator",name:"Investigador",en:"Investigator",src:"Player Core 2",rarity:"Común",type:"Marcial",roles:["Utilidad","Atacante"],
+ hp:"8",key:"Inteligencia",cast:"Ninguno",armor:"Ligera",sub:"Metodología",
+ tag:"Un detective que tira el dado antes de golpear, y que sabe más que nadie en la mesa.",
+ mech:[
+  "<span class=\"act\">&#9670;</span> <b>Idear una estratagema</b> tira por adelantado un d20 que puedes sustituir por tu Ataque en ese turno, y te permite usar Inteligencia en vez de Fuerza o Destreza en esa tirada. Sabes si acierta antes de comprometerte.",
+  "<b>Seguir una pista</b> abre una investigación formal sobre una pregunta concreta y te da un bonificador de circunstancia para responderla: un subsistema real fuera del combate, no un botón de ambientación.",
+  "Tu <b>metodología</b> —Empirismo, Medicina forense, Interrogatorio, Ciencias alquímicas— fija tu especialidad y tus herramientas.",
+  "Tienes una lista de habilidades muy profunda y, a niveles altos, puedes intentar casi cualquier prueba sin estar entrenado.",
+  "El daño en combate es modesto a propósito. Ganas los combates planificando el golpe, no superando a nadie en daño."],
+ rp:[
+  "Los investigadores no pueden dejar un enigma en paz. Cada conversación se vuelve un interrogatorio y cada escena suelta un hilo del que tirar, sea relevante o no.",
+  "Idear una estratagema es rol disfrazado de regla: mecánicamente estás prediciendo el resultado, y decirlo en voz alta es el placer de la clase.",
+  "Tus aliados cuentan contigo para resolver casos; a algunos las deducciones constantes les agotan aunque se apoyen del todo en ellas."],
+ dt:"El tiempo libre parece formación continua: estudiar materias nuevas y viejas, cultivar contactos que trafican con información, mantener la mente ocupada. Bastantes se sacan un dinero como detective privado o asesorando a la guardia local, porque son exactamente las mismas destrezas.",
+ yes:"Quieres ser la persona más lista de la sala, tu DJ dirige misterios y te gusta conocer el resultado antes de comprometerte.",
+ no:"Tu campaña es puro mazmorreo. Buena parte de esta clase apunta a problemas que un juego solo de combate no te va a plantear.",
+ s:{melee:2,ranged:3,defenses:2,magic:1,support:3,healing:3,skills:5,questing:5,popularity:1,difficulty:4}},
+
+{id:"kineticist",name:"Kineticista",en:"Kineticist",src:"Rage of Elements",rarity:"Común",type:"Híbrido",roles:["Atacante","Controlador","Defensor"],
+ hp:"8",key:"Constitución",cast:"Ninguno — los impulsos son a voluntad",armor:"Ligera y media",sub:"Portal cinético",
+ tag:"Poder elemental sin un solo espacio de conjuro: todo lo que sabes hacer puedes hacerlo cada asalto, siempre.",
+ mech:[
+  "Un <b>portal cinético</b> en tu cuerpo canaliza uno o dos de entre aire, tierra, fuego, metal, agua y madera. No hay preparación diaria ni economía de conjuros.",
+  "Los <b>impulsos</b> son a voluntad, alimentados por activar tu <b>aura cinética</b> en cada encuentro. <span class=\"act\">&#9670;</span> Descarga elemental es tu ataque fiable, a distancia o cuerpo a cuerpo.",
+  "Los impulsos grandes tienen el rasgo <b>desbordamiento</b>, que apaga el aura hasta que gastas una acción en recuperarla: un coste integrado por el que un golpe grande se come tu siguiente preparación.",
+  "El <b>Umbral del portal</b> te deja profundizar en un elemento o ramificarte hacia un segundo según subes de nivel.",
+  "<b>Constitución es tu atributo clave</b>: la única clase donde el atributo de lanzamiento es también el de salud, lo que hace a los kineticistas mucho más duros que cualquier otro usuario de magia."],
+ rp:[
+  "Muchos kineticistas arrastran un origen turbulento en el momento en que se abrió su portal, a veces traumático, y cierta inquietud persistente por un poder que no controlan del todo.",
+  "Tu elemento suele teñir la personalidad entera: temperamento de fuego, terquedad de piedra, adaptabilidad fácil del agua.",
+  "Los demás alternan entre el asombro ante ese poder elemental crudo y el temor callado de que acabe consumiéndote."],
+ dt:"Los kineticistas usan los ratos tranquilos para comulgar con su elemento y practicar un control más fino del portal. Cuando quieren que el poder se exprese de otra manera, reentrenar consiste en realinear el flujo de ese portal, no simplemente en descansar.",
+ yes:"Quieres lanzar poder elemental cada asalto sin llevar cuenta de nada, y ser resistente mientras lo haces.",
+ no:"Quieres la flexibilidad de una lista de conjuros. Las opciones del kineticista se fijan al construir y no se cambian día a día.",
+ s:{melee:3,ranged:4,defenses:3,magic:3,support:3,healing:3,skills:1,questing:2,popularity:5,difficulty:3}},
+
+{id:"magus",name:"Magus",en:"Magus",src:"Impossible Magic",rarity:"Común",type:"Híbrido",roles:["Atacante"],
+ hp:"8",key:"Fuerza o Destreza",cast:"Arcana (preparada, pocos espacios)",armor:"Ligera y media",sub:"Estudio híbrido",
+ tag:"Espada y conjuro en el mismo mandoble, construido alrededor de un único golpe demoledor.",
+ mech:[
+  "<span class=\"act\">&#9670;&#9670;</span> <b>Golpe de conjuro</b> lanza un conjuro de ataque o de salvación directamente dentro de un Ataque con arma y resuelve ambos a la vez. Un crítico implica un conjuro crítico: los números más altos del juego.",
+  "Golpe de conjuro debe <b>recargarse</b> entre usos, así que el bucle es golpear, rehacerse, golpear. Gestionar esa cadencia es toda la destreza de la clase.",
+  "<span class=\"act\">&#9670;</span> <b>Cascada arcana</b> es una postura en la que entras tras lanzar y que añade daño de fuerza a tus ataques cuerpo a cuerpo: es lo que hace que valgan la pena los asaltos sin Golpe de conjuro.",
+  "Tienes <b>muy pocos espacios de conjuro</b>. Son munición para el Golpe de conjuro, no una caja de herramientas de lanzador, y elegir qué cargar es la preparación de verdad.",
+  "Tu <b>estudio híbrido</b> fija tu forma: sombra risueña para moverte y desaparecer, púa doble para una variante asistida por familiar, y otros para dos manos, escudo o distancia."],
+ rp:[
+  "Los magus son estudiantes perpetuos intentando dominar dos disciplinas exigentes a la vez, y suelen excederse aceptando demasiados proyectos simultáneos.",
+  "El estudio híbrido se lee como una escuela o tradición, lo que da buen trasfondo: quién te enseñó, cómo se llama la forma, quién más la practica.",
+  "Hay una arrogancia natural en la fantasía, y se interpreta de maravilla: un magus sabe que su golpe inicial es lo mejor que puede pasar en la mesa, y suele tener razón."],
+ dt:"Fiel a su naturaleza doble, el magus reparte el tiempo libre entre las dos mitades de su formación: investigar conjuros y fabricar objetos mágicos por un lado; reentrenar técnicas de combate y practicar maniobras nuevas por el otro. Ninguna de las dos disciplinas llega a descansar.",
+ yes:"Quieres construir hacia un momento demoledor por combate y disfrutas de la preparación tanto como del desenlace.",
+ no:"Quieres lanzar como lanza un lanzador. Calcular mal la recarga desperdicia asaltos enteros.",
+ s:{melee:4,ranged:3,defenses:3,magic:3,support:1,healing:0,skills:2,questing:2,popularity:2,difficulty:3}},
+
+{id:"monk",name:"Monje",en:"Monk",src:"Player Core 2",rarity:"Común",type:"Marcial",roles:["Atacante","Defensor"],
+ hp:"10",key:"Fuerza o Destreza",cast:"Conjuros de enfoque qi opcionales",armor:"Sin armadura (la mejor del juego)",sub:"Posturas",
+ tag:"Tres ataques por turno, la mejor defensa sin armadura del juego y posturas que reescriben tus opciones.",
+ mech:[
+  "<span class=\"act\">&#9670;</span> <b>Ráfaga de golpes</b> da dos Ataques sin armas por una sola acción, así que un turno de monje contiene tres ataques y aún deja sitio para moverse.",
+  "La <b>defensa sin armadura</b> sube hasta legendaria —la mejor progresión de CA del juego— y no te cuesta más que una buena Destreza.",
+  "Las <b>posturas</b> son la subclase en la práctica: interruptores pequeños a mitad de combate que cambian tu estilo de un asalto a otro en lugar de un único recurso grande.",
+  "<b>Movimiento increíble</b> te convierte en el personaje más rápido del tablero sin magia, y la <b>Senda a la perfección</b> convierte una, luego dos y luego tres de tus salvaciones en defensas casi inexpugnables.",
+  "Los <b>conjuros qi</b> son conjuros de enfoque opcionales alimentados por energía interior —golpes que teletransportan, estallidos elementales, vuelo— si quieres una capa sobrenatural."],
+ rp:[
+  "Los monjes combinan entrenamiento físico riguroso con práctica filosófica real: meditación, autodisciplina, calma bajo presión.",
+  "Sueles acabar de consejero extraoficial del grupo, la persona a la que se lleva una decisión difícil.",
+  "Los demás alucinan con las proezas físicas, pero a veces encuentran los votos y la ecuanimidad constante un poco rígidos."],
+ dt:"El tiempo libre de un monje es disciplinado por diseño: ejercicio diligente, alimentación cuidada, meditación y estudio continuado de la filosofía que siga. Muchos además cultivan un oficio que pretenden perfeccionar, tratándolo como otra forma de la misma mejora personal de por vida.",
+ yes:"Quieres movilidad, CA alta y varios ataques sin depender del equipo para que funcione.",
+ no:"Quieres el golpe único más grande. El monje cambia daño por impacto a cambio de volumen y posicionamiento.",
+ s:{melee:4,ranged:2,defenses:4,magic:1,support:2,healing:0,skills:1,questing:1,popularity:3,difficulty:2}},
+
+{id:"necromancer",name:"Nigromante",en:"Necromancer",src:"Impossible Magic",rarity:"Común",type:"Lanzador",roles:["Controlador","Atacante"],
+ hp:"8",key:"Inteligencia",cast:"Oculta (preparada)",armor:"Ligera",sub:"Método fatal y fascinación macabra",
+ tag:"Un lanzador oculto preparado que inunda el campo de cuerpos baratos y prescindibles.",
+ mech:[
+  "Los <b>siervos</b> son el motor: muertos vivientes descerebrados de 1 punto de golpe que alzas para flanquear, distraer, hacer de muro o sacrificar directamente por Puntos de enfoque. Débiles de uno en uno, numerosos y gratis.",
+  "<b>Maestría de la vida y la muerte</b> te deja intercambiar libremente los tipos de daño de vacío y vitalidad en tus conjuros: el mismo conjuro puede curar a un aliado no muerto o herir a un enemigo vivo.",
+  "Encima de todo eso eres un lanzador <b>oculto preparado</b> completo, con el talento habitual de la tradición para hacerle cosas terribles a las mentes.",
+  "Tu <b>método fatal</b> —Titiritero para enjambrar siervos, Segador para el combate directo— y tu <b>fascinación macabra</b> fijan juntos tu especialidad.",
+  "El reto es la economía de acciones: los siervos hay que dirigirlos, y equilibrar tu propio lanzamiento con el mando de la horda es lo que la clase te pide dominar."],
+ rp:[
+  "Los nigromantes estudian la muerte con fascinación genuina, no con nihilismo: anatomía, mortalidad, la frontera entre vida y no-vida.",
+  "Algunos persiguen conocimiento prohibido para burlar la muerte sin más, por sí mismos o por alguien a quien perdieron.",
+  "Otros malinterpretan esa fascinación como crueldad o regodeo; unos pocos te buscan precisamente esperando una forma de hablar con sus muertos."],
+ dt:"Los nigromantes preparan pociones, fabrican objetos y transcriben pergaminos para el grupo mientras persiguen conocimiento oculto o encerrado relacionado con su fascinación macabra. Algunos asumen discretamente el papel de guardián del cementerio, asegurándose de que los muertos a su cargo sigan estándolo.",
+ yes:"Quieres un lanzador completo con un enjambre de cuerpos prescindibles, y una clase sobre la que el grupo quizá tenga que discutir.",
+ no:"Quieres ser bienvenido sin complicaciones en el pueblo, o te disgusta gestionar criaturas extra en tu turno.",
+ s:{melee:3,ranged:3,defenses:2,magic:3,support:3,healing:2,skills:3,questing:2,popularity:3,difficulty:4}},
+
+{id:"oracle",name:"Oráculo",en:"Oracle",src:"Player Core 2",rarity:"Común",type:"Lanzador",roles:["Apoyo","Controlador","Atacante"],
+ hp:"8",key:"Carisma",cast:"Divina (espontánea)",armor:"Ligera",sub:"Misterio",
+ tag:"Poder divino sin deidad, y una maldición que se agrava cada vez que echas mano de él.",
+ mech:[
+  "Eres un lanzador <b>divino espontáneo</b> con un repertorio inusualmente amplio —tres conjuros al día a nivel 1, más que la mayoría de lanzadores espontáneos— y conjuros distintivos para intensificar con flexibilidad.",
+  "Tu <b>misterio</b> —Antepasados, Huesos, Cosmos, Llamas, Vida, Saber, Mareas y otros— aporta conjuros de revelación, conjuros extra en tu lista y una habilidad concedida. Cada uno se juega como una clase distinta.",
+  "Las capacidades <b>malditas</b> conceden beneficios inmediatos potentes al precio de acumular sobre ti una maldición propia del misterio, que solo se limpia al <b>Reenfocar</b>.",
+  "Eso convierte cada combate en un cálculo de riesgo en vivo: ¿hasta dónde apoyarse en tu propio poder antes de que el coste supere al beneficio?",
+  "El Remaster lo reconstruyó como elección y no como castigo, así que un oráculo moderno elige estar maldito, una y otra vez, a propósito."],
+ rp:[
+  "El oráculo no pidió esto. El poder llegó sin invitación y trajo una condición consigo: la premisa más dramática de cualquier lanzador.",
+  "Tu maldición es visible, y la mayoría la malinterpreta como prueba de algún pecado pasado en vez de como el precio real de tocar fuerzas más allá de la religión ordinaria.",
+  "Unos abrazan el misterio como una vocación sagrada; otros lo tratan como un castigo con el que han aprendido a convivir. Quien entiende lo que ve, respeta el sacrificio."],
+ dt:"Los oráculos ahondan en su misterio y en las fuentes divinas que lo alimentan, y a muchos les resulta más llevadera la maldición junto a otros que comparten el mismo interés. Algunos se alinean con una religión organizada construida en torno a su misterio, o fundan un seguimiento propio dedicado a él.",
+ yes:"Quieres lanzamiento divino espontáneo con un motor dramático incorporado, y un personaje cuyo poder le cuesta algo visible.",
+ no:"Quieres recursos limpios y predecibles. El oráculo asocia a propósito una penalización a sus mejores opciones.",
+ s:{melee:2,ranged:3,defenses:2,magic:5,support:4,healing:3,skills:2,questing:4,popularity:1,difficulty:5}},
+
+{id:"psychic",name:"Psíquico",en:"Psychic",src:"Dark Archive",rarity:"Común",type:"Lanzador",roles:["Atacante","Controlador"],
+ hp:"6",key:"Inteligencia o Carisma",cast:"Oculta (espontánea)",armor:"Sin armadura",sub:"Mente consciente y subconsciente",
+ tag:"La mitad de espacios de conjuro, trucos extraordinarios y un botón de estallido que te vuelve aterrador un instante.",
+ mech:[
+  "Tienes aproximadamente <b>la mitad de espacios de conjuro</b> que un lanzador normal. A cambio, tus <b>trucos psi</b> son armas de verdad, potenciados por <b>amplificaciones</b> de Punto de enfoque que hacen que un truco se comporte como un conjuro real.",
+  "<span class=\"act\">&#9670;</span> <b>Desatar la psique</b> es el estallido: se activa al empezar un turno tras haber lanzado el anterior, potencia tu daño durante dos asaltos y te deja estupefacto mientras la mente se recupera.",
+  "Eso da un ritmo que ningún otro lanzador tiene: conservar, desatar, aguantar la resaca. Elegir los dos asaltos correctos es todo el juego.",
+  "Tu <b>mente consciente</b> elige tus trucos y tu estética; tu <b>mente subconsciente</b> concede un conjuro de enfoque y decide si tu atributo clave es Inteligencia o Carisma.",
+  "<b>6 puntos de golpe por nivel</b> y ninguna competencia con armadura: el lanzador completo más frágil del juego, y hay que jugarlo desde detrás de algo."],
+ rp:[
+  "La magia psíquica inquieta en Golarion. Sale de dentro de una persona, no tiene tradición detrás y suele ser algo que ocurrió, no algo que se aprendió.",
+  "Tratas el funcionamiento de tu propia mente como territorio fascinante, y a veces prefieres el contacto mental o la telequinesis sutil aunque bastara con lo normal.",
+  "A los demás les impresiona, pero les cuesta aceptarlo como el mismo tipo de magia; unos pocos se preguntan, incómodos, si por debajo eres otra cosa."],
+ dt:"Los psíquicos siguen explorando las profundidades de su propia mente, buscando conjuros y fenómenos nuevos, porque entenderse mejor a uno mismo se traduce directamente en más poder. Reentrenar se vuelve una forma de poner a prueba literalmente los límites de su propia adaptabilidad conforme cambia esa comprensión.",
+ yes:"Quieres lanzamiento basado en trucos que puedas usar siempre, salpicado de ventanas breves de poder enorme.",
+ no:"Quieres una caja de herramientas preparada amplia, o no puedes mantenerte fuera del cuerpo a cuerpo con fiabilidad: esta clase muere rápido.",
+ s:{melee:2,ranged:4,defenses:1,magic:4,support:2,healing:1,skills:3,questing:3,popularity:1,difficulty:4}}
+);
+
+CLASSES.push(
+{id:"ranger",name:"Explorador",en:"Ranger",src:"Player Core",rarity:"Común",type:"Marcial",roles:["Atacante","Utilidad"],
+ hp:"10",key:"Fuerza o Destreza",cast:"Conjuros de enfoque primigenios opcionales",armor:"Ligera y media",sub:"Ventaja del cazador",
+ tag:"Marca a un enemigo y vuélvete específica y deliberadamente bueno en matarlo.",
+ mech:[
+  "<span class=\"act\">&#9670;</span> <b>Cazar presa</b> designa un objetivo y te da bonificadores para rastrearlo y percibirlo. Casi todas las capacidades de la clase dependen de esa marca.",
+  "Tu <b>ventaja del cazador</b> decide qué compra la marca: <b>Ráfaga</b> recorta tu penalizador por ataque múltiple, <b>Precisión</b> añade mucho daño al primer impacto de cada asalto, <b>Ingenio</b> cambia daño por habilidades y CA frente a tu presa.",
+  "Tienes <b>las mejores salvaciones generales de cualquier marcial</b>: experto en Fortaleza y Reflejos desde nivel 1.",
+  "El dominio del terreno es la fuerza silenciosa: ignorar terreno difícil, moverte sin dejar rastro y una ventaja real en plena naturaleza.",
+  "Los <b>compañeros animales</b> y las <b>trampas</b> son las dos grandes ramas opcionales, y los conjuros de guardián añaden una capa primigenia ligera si la quieres."],
+ rp:[
+  "Los exploradores viven en la frontera entre civilización y naturaleza, y se enorgullecen del conocimiento práctico que eso trae.",
+  "Unos protegen lo salvaje de los asentamientos que avanzan; otros protegen a los asentamientos de lo que lo salvaje produce. En ambos casos, te llaman a ti.",
+  "Cazar presa crea concentración como rasgo de carácter: un explorador se fija en una sola cosa de la sala y le dedica toda su atención."],
+ dt:"Los exploradores fabrican armas y adiestran animales preparando la próxima salida, pero están tan a menudo al aire libre como asentados: saliendo de caza, o explorando las tierras cercanas para entenderlas antes de que se conviertan en un problema.",
+ yes:"Quieres un marcial potente y sin fricción, con utilidad real en exploración y un compañero animal opcional.",
+ no:"Quieres ser igual de bueno contra todo a la vez. El explorador da lo mejor de sí apuntado a un solo objetivo.",
+ s:{melee:4,ranged:4,defenses:4,magic:1,support:2,healing:1,skills:3,questing:3,popularity:2,difficulty:2}},
+
+{id:"rogue",name:"Pícaro",en:"Rogue",src:"Player Core",rarity:"Común",type:"Marcial",roles:["Atacante","Utilidad"],
+ hp:"8",key:"Destreza (u otro, según la especialidad)",cast:"Ninguno",armor:"Ligera",sub:"Especialidad de pícaro",
+ tag:"Más habilidades que nadie, y daño que llega en cuanto el enemigo deja de prestar atención.",
+ mech:[
+  "<b>Ataque furtivo</b> añade daño de precisión siempre que tu objetivo esté desprevenido, y <b>Golpe debilitante</b> remata entorpeciéndolo o debilitándolo todavía más.",
+  "Tu <b>especialidad</b> decide cómo dejas desprevenidos a los objetivos y puede incluso cambiar tu atributo clave: Ladrón, Matón, Bribón, Embaucador arcano y otras.",
+  "Obtienes <b>con diferencia las mayores dotes y aumentos de habilidad</b> de cualquier clase. Fuera del combate, el pícaro es el personaje más capaz de Pathfinder.",
+  "Contra un objetivo fresco y alerta tu daño es menor que el de un bárbaro o un guerrero, pero todo tu equipo existe para que los objetivos casi nunca estén frescos ni alerta.",
+  "<b>Ataque sorpresa</b> deja a los enemigos desprevenidos en el primer asalto, así que empiezas cada combate ya encendido."],
+ rp:[
+  "Los pícaros viven del riesgo y la oportunidad, y a menudo bordean o ignoran leyes que les parecen absurdas, normalmente según su propio código y no por pura codicia.",
+  "La especialidad es un oficio, no una moral: Cerebro, Bribón y Matón describen a un estratega, a un timador y a un rompepiernas.",
+  "La gente te encuentra encantador y útil en un apuro, mientras sospecha —no siempre sin razón— que tu interés propio va primero."],
+ dt:"El tiempo libre del pícaro tira hacia lo ilícito: aligerar bolsillos, mover mercancía no del todo legal, mantenerse enchufado al bajo mundo local. Algunos lo formalizan entrando en un gremio de ladrones, y los más ambiciosos acaban fundando el suyo.",
+ yes:"Quieres ser excelente fuera del combate, móvil dentro de él, y disfrutas preparando tu propio daño.",
+ no:"Quieres daño sin requisitos. Sin un objetivo desprevenido, los números del pícaro caen en picado.",
+ s:{melee:4,ranged:3,defenses:3,magic:0,support:3,healing:0,skills:5,questing:5,popularity:5,difficulty:2}},
+
+{id:"runesmith",name:"Runista",en:"Runesmith",src:"Impossible Magic",rarity:"Común",type:"Marcial",roles:["Apoyo","Atacante","Controlador"],
+ hp:"8",key:"Inteligencia",cast:"Ninguno — runas, no conjuros",armor:"Ligera y media",sub:"Repertorio de runas",
+ tag:"Magia de mecha retardada: escribe runas por el campo de batalla y luego pronuncia sus nombres verdaderos.",
+ mech:[
+  "Aplicas <b>runas</b> de dos maneras: las <b>grabadas</b> son lentas de colocar pero duraderas; las <b>trazadas</b> son rápidas pero efímeras. Ambas van sobre criaturas o equipo.",
+  "<span class=\"act\">&#9670;</span> <b>Invocar runa</b> pronuncia el nombre verdadero de una runa y la detona. Aplicar y luego invocar es el ritmo de dos tiempos de todo turno de runista.",
+  "Los <b>diacríticos</b> permiten que una runa modifique a otra, así que la profundidad está en qué runas conoces y cuáles combinan bien al invocarse juntas.",
+  "Las runas van sobre <b>aliados como mejoras</b> o sobre <b>enemigos como penalizaciones</b> con el mismo mecanismo, lo que te hace clase de apoyo y de control a la vez.",
+  "Además eres el <b>especialista en fabricar runas</b> del juego: aprendes automáticamente fórmulas de runas de armadura y arma al subir de nivel, y el equipo del grupo pasa a ser discretamente tu departamento."],
+ rp:[
+  "Las runas son lenguaje. Sabes leer algo más antiguo que los idiomas que habla la gente, y usarlo implica decir cosas que no deberían decirse a la ligera.",
+  "Mitad erudito, mitad artista: te fascina la gramática y la etimología de la escritura mágica y tiendes a soltar palabras antiguas en conversaciones normales.",
+  "Los demás dan por hecho que eres un lanzador completo y no un artesano, y es tan probable que te pidan arreglar un broche roto como que te pregunten por magia."],
+ dt:"Los runistas equilibran la investigación erudita sobre teoría rúnica con la disciplina manual del oficio: una mañana componiendo algo parecido a un poema sobre el significado de una runa, una tarde martilleándola en la fragua. En ambos casos, la comprensión se ahonda un poco cada día.",
+ yes:"Quieres un marcial con una caja de herramientas mágica que ayuda a los aliados y estorba a los enemigos con un mismo mecanismo elegante.",
+ no:"Quieres golpear sin un paso previo de preparación. El runista gasta acciones preparando antes de que rinda.",
+ s:{melee:3,ranged:3,defenses:3,magic:1,support:4,healing:1,skills:3,questing:2,popularity:2,difficulty:3}},
+
+{id:"sorcerer",name:"Hechicero",en:"Sorcerer",src:"Player Core 2",rarity:"Común",type:"Lanzador",roles:["Atacante","Controlador"],
+ hp:"6",key:"Carisma",cast:"Cualquier tradición (espontánea)",armor:"Sin armadura",sub:"Linaje",
+ tag:"Magia en la sangre: sin libro de conjuros, sin deidad, solo más conjuros que nadie.",
+ mech:[
+  "Tienes el <b>mayor repertorio espontáneo</b> del juego y <b>conjuros distintivos</b> para intensificar tus favoritos con libertad, lo que te da flexibilidad real pese a una lista diaria fija.",
+  "Tu <b>linaje</b> —Dracónico, Angélico, Demoníaco, Aberrante, Imperial, No muerto y más— fija tu tradición de conjuros, así que un hechicero puede construirse para cubrir prácticamente cualquier papel de lanzador.",
+  "La <b>magia de sangre</b> dispara automáticamente un efecto añadido cada vez que lanzas un conjuro de linaje o un don hechiceril, de modo que cada lanzamiento es algo más que un conjuro.",
+  "El linaje concede además dos habilidades extra y sus propios conjuros de enfoque.",
+  "<b>6 puntos de golpe por nivel</b>, sin armadura y sin ningún recurso marcial. El techo más alto de lanzamiento puro sobre el chasis más expuesto del juego."],
+ rp:[
+  "Nadie te enseñó. Algo en tu ascendencia se está expresando a través de ti, y no pidió permiso.",
+  "El linaje modela tu imagen de ti mismo entera: abrazar con orgullo una herencia dracónica, o preocuparte en voz baja por una demoníaca.",
+  "La clase plantea esto como una tensión continua: refinar el don hacia la maestría, o dejar que se pudra hacia la ruina."],
+ dt:"Los hechiceros fabrican objetos mágicos y transcriben pergaminos, pero otro tanto del tiempo libre se va en el propio linaje: investigar su ascendencia, o buscar a las personas y criaturas ligadas a lo que sea que corra por su sangre.",
+ yes:"Quieres lanzar la mayor cantidad de conjuros, adaptarte sobre la marcha y elegir tu tradición según el grupo.",
+ no:"Quieres una lista amplia de conjuros conocidos o un cuerpo resistente. Tu repertorio es estrecho y eres extremadamente frágil.",
+ s:{melee:1,ranged:4,defenses:1,magic:5,support:3,healing:3,skills:2,questing:4,popularity:3,difficulty:3}},
+
+{id:"summoner",name:"Invocador",en:"Summoner",src:"Impossible Magic",rarity:"Común",type:"Híbrido",roles:["Atacante","Defensor"],
+ hp:"10 (compartidos con el eidolon)",key:"Carisma",cast:"Tradición de tu eidolon (espontánea)",armor:"Ligera",sub:"Eidolon",
+ tag:"Dos personajes, una reserva de puntos de golpe y un único turno que repartir entre ambos.",
+ mech:[
+  "Tu <b>eidolon</b> no es una mascota, sino un compañero de igual a igual. Compartís <b>reserva de puntos de golpe</b>, <b>penalizador por ataque múltiple</b> y sentidos.",
+  "También compartís <b>economía de acciones</b>. Cada asalto, <b>Actuar juntos</b> permite que ambos aportéis, y exprimir ese reparto es toda la destreza de la clase.",
+  "Vuestras defensas escalan a la vez mediante capacidades como <b>Juggernauts gemelos</b> y <b>Resolución compartida</b>, y hasta compartís los beneficios de los objetos mágicos.",
+  "El <b>tipo</b> del eidolon —ángel, bestia, constructo, dragón, demonio, elemental, feérico, planta, psicopompo, no muerto— fija sus ataques, sus sentidos y tu propia tradición de conjuros.",
+  "El lanzamiento es una guarnición, no el plato principal, y las dotes de <b>evolución</b> mejoran al eidolon y no a ti: casi todo tu crecimiento le ocurre a tu compañero."],
+ rp:[
+  "Es la única clase que te entrega un segundo personaje al que dar voz. Socios, hermanos, amo y sirviente, o rivales atrapados juntos: la relación es la premisa.",
+  "El vínculo te marca visiblemente con un sigilo que no se puede ocultar, así que casi cualquiera nota que estáis unidos aunque no sepa qué es un invocador.",
+  "¿De dónde salió, y quiere estar aquí? Un invocador que nunca ha respondido a eso está desaprovechando lo mejor de la clase."],
+ dt:"Los invocadores usan los ratos tranquilos para aprender más sobre la naturaleza de su eidolon, hurgando en los secretos de su tradición mágica para adquirir conjuros nuevos, fabricando objetos con su ayuda, o tirando de sus propias habilidades sociales para conseguir aliados útiles para los dos.",
+ yes:"Quieres un compañero de verdad y el rompecabezas de acciones compartidas te resulta interesante en vez de limitante.",
+ no:"Quieres manejar un solo personaje con eficiencia. El invocador es la clase más lenta a la hora de resolver un turno.",
+ s:{melee:3,ranged:3,defenses:3,magic:3,support:2,healing:1,skills:3,questing:4,popularity:1,difficulty:5}},
+
+{id:"swashbuckler",name:"Espadachín",en:"Swashbuckler",src:"Player Core 2",rarity:"Común",type:"Marcial",roles:["Atacante","Utilidad"],
+ hp:"10",key:"Destreza",cast:"Ninguno",armor:"Ligera",sub:"Estilo",
+ tag:"Gánate el brío haciendo algo con estilo, y gástatelo en zanjar la discusión.",
+ mech:[
+  "El <b>brío</b> hay que ganárselo en cada combate con una acción de <b>bravata</b>, y se evapora en cuanto el combate termina: no se acumula de un encuentro a otro.",
+  "Tu <b>estilo</b> decide cómo lo consigues: Bailarín de batalla, Fanfarrón, Esgrimidor, Gimnasta, Granuja o Ingenioso. Como el generador es una prueba de habilidad, siempre estás haciendo algo interesante.",
+  "Los <b>remates</b> gastan el brío en ataques vistosos con mucho daño de precisión, y terminan tu turno. La tensión entre gastarlo y conservarlo es la clase.",
+  "<span class=\"act\">&#8635;</span> <b>Réplica oportuna</b> castiga a los enemigos que fallan críticamente contra ti, y tu Velocidad sube mucho mientras tengas brío.",
+  "El tempo es genuinamente distinto al de otros marciales: un ritmo de acciones de estilo hacia remates en vez de simplemente atacar cada asalto."],
+ rp:[
+  "El espadachín es la única clase donde tener estilo es una regla escrita: sin garbo, no hay daño.",
+  "Eso lo convierte en la clase más teatral de la mesa, y en una delicia para quien quiera hablar durante el combate.",
+  "Los demás leen ese alarde como carisma magnético o como arrogancia insufrible según lo bien que te conozcan, y subestiman la amenaza hasta que la hoja los encuentra."],
+ dt:"Los espadachines están tan dispuestos a correrse una juerga en la taberna como a mantener el equipo y ensayar acrobacias nuevas. Los que tienen una reputación que proteger van más lejos: montan una organización con su nombre, o cultivan un séquito de admiradores que mantenga viva la leyenda.",
+ yes:"Quieres describir a tu personaje haciendo algo gallardo cada asalto y que las reglas te lo recompensen.",
+ no:"Quieres constancia. Ganar brío puede fallar, y sin él tu daño baja de forma notable.",
+ s:{melee:4,ranged:2,defenses:4,magic:0,support:2,healing:0,skills:4,questing:3,popularity:3,difficulty:3}},
+
+{id:"thaumaturge",name:"Taumaturgo",en:"Thaumaturge",src:"Dark Archive",rarity:"Común",type:"Marcial",roles:["Atacante","Utilidad"],
+ hp:"8",key:"Carisma",cast:"Ninguno — instrumentos y esotérica",armor:"Ligera y media",sub:"Instrumento",
+ tag:"Un cazador de monstruos con una bolsa de cachivaches supersticiosos, y todos funcionan.",
+ mech:[
+  "<span class=\"act\">&#9670;</span> <b>Explotar vulnerabilidad</b> usa Saber esotérico para identificar y luego explotar la debilidad concreta de una criatura, y puede improvisar una contra criaturas que no tienen ningún punto débil natural.",
+  "Tus <b>instrumentos</b> —amuleto, campana, cáliz, linterna, espejo, regalía, vial, varita— conceden cada uno un beneficio pasivo y una acción activa, y vas sumando más al subir de nivel.",
+  "<b>Potenciación del instrumento</b> añade buen daño fijo a tus Ataques mientras sostengas un instrumento, lo que construye la estampa distintiva: arma en una mano, objeto extraño en la otra.",
+  "La caza de monstruos basada en saberes está integrada en el bucle de combate, y no al margen como una acción suelta de Recordar conocimiento.",
+  "Es la clase construida para responder a «¿cómo le hago daño a esta cosa rara?», y brilla justo contra las amenazas que a otras clases se les atragantan."],
+ rp:[
+  "No lanzas conjuros. Sabes que un espejo desconcierta a un doppelganger y que una campana perturba a los muertos, y lo afirmas con enorme seguridad.",
+  "Los taumaturgos ven conexiones por todas partes y tratan lo sobrenatural como un enigma con solución, incluso cuando se están inventando la explicación sobre la marcha.",
+  "Los aliados acuden a ti en cuanto aparece algo inquietante; los desconocidos te confunden con un mago y no ven que tu poder sale de baratijas rescatadas y saber ganado a pulso."],
+ dt:"Los taumaturgos ahondan en el misterio sobrenatural que sacó a la luz la última aventura, comprobando cómo podría aplicarse a la siguiente. Eso implica desempolvar reliquias, cultivar hierbas y forjar baratijas nuevas para reponer la esotérica, además de cobrarse favores del surtido variopinto de personas, criaturas y fuerzas místicas que han ido conociendo.",
+ yes:"Quieres un cazador de monstruos ocultista que destaca en conocimiento, se defiende bien en combate y carga con muchos objetos raros.",
+ no:"Quieres sencillez. Entre instrumentos, esotérica y seguimiento de vulnerabilidades, la hoja y el turno están igual de ocupados.",
+ s:{melee:4,ranged:3,defenses:3,magic:2,support:3,healing:1,skills:4,questing:4,popularity:4,difficulty:3}},
+
+{id:"witch",name:"Bruja",en:"Witch",src:"Player Core",rarity:"Común",type:"Lanzador",roles:["Controlador","Apoyo"],
+ hp:"6",key:"Inteligencia",cast:"Cualquier tradición, la fija el patrón (preparada)",armor:"Sin armadura",sub:"Patrón",
+ tag:"Tu familiar guarda tu magia, tu patrón te la entrega, y ninguno de los dos se explica.",
+ mech:[
+  "Tu <b>familiar</b> no es ambientación: es el depósito real de tus conjuros conocidos, y tienes que consultarlo para preparar cada día. Perderlo, aunque sea temporalmente, importa de verdad.",
+  "Tu <b>patrón</b> —un señor feérico, una divinidad oculta, un espíritu antiguo— fija tu tradición de conjuros y se comunica únicamente a través de ese familiar.",
+  "Los <b>maleficios</b> son las intervenciones directas del patrón: conjuros de enfoque potentes, pero estrictamente <b>uno por turno</b> por muchas acciones que te queden. Al patrón no se le importuna dos veces en un asalto.",
+  "Las <b>lecciones</b> son la columna de dotes de la clase: cada una enseña un maleficio y añade un conjuro a tu lista, y se leen como una educación arcana de verdad.",
+  "Eres un lanzador preparado con <b>6 puntos de golpe por nivel</b> y sin armadura: control enorme, margen de error mínimo."],
+ rp:[
+  "Alguien te está dando este poder y puede que no sepas por qué, ni quién. El patrón se revela solo mediante presagios y sutilezas, nunca en una conversación clara.",
+  "Esa incertidumbre pone nerviosa a la gente: ¿es este poder benévolo, siniestro sin saberlo, o algo intermedio? La mayoría de las brujas tampoco lo sabe.",
+  "El familiar es un personaje completo con voz propia, y la compañía constante hace que nunca estés a solas en una escena."],
+ dt:"Las brujas preparan pociones, fabrican objetos mágicos y persiguen conjuros nuevos para que los aprenda el familiar. Otro tanto de energía se va al misterio mayor: descifrar los fines del patrón y la naturaleza de sus propios poderes, o buscar a otras brujas por comunidad y colaboración.",
+ yes:"Quieres magia de control profunda, un motor de maleficios para todo el día y un familiar al que le acabarás cogiendo cariño.",
+ no:"Te disgustan los puntos únicos de fallo. Perder tu familiar es un riesgo que ningún otro lanzador arrastra.",
+ s:{melee:1,ranged:3,defenses:1,magic:4,support:5,healing:2,skills:3,questing:2,popularity:4,difficulty:5}},
+
+{id:"wizard",name:"Mago",en:"Wizard",src:"Player Core",rarity:"Común",type:"Lanzador",roles:["Controlador","Utilidad"],
+ hp:"6",key:"Inteligencia",cast:"Arcana (preparada)",armor:"Sin armadura",sub:"Escuela y tesis",
+ tag:"La mayor colección de conjuros del juego, y la respuesta correcta a cualquier cosa: si la preparaste.",
+ mech:[
+  "Tu <b>libro de conjuros</b> crece sin límite. Añades conjuros cada nivel y puedes comprar, copiar o robar más, así que una campaña larga te deja con opciones que ningún otro lanzador tiene.",
+  "Tu <b>escuela arcana</b> concede conjuros de currículo extra cada día, o eliges la flexible <b>escuela de teoría mágica unificada</b>.",
+  "Tu <b>tesis arcana</b> es una segunda elección independiente: una ventaja de investigación distintiva, como sustituir conjuros preparados durante el día o construirte alrededor de un báculo.",
+  "<b>Drenar objeto vinculado</b> te devuelve una vez al día un conjuro ya lanzado desde tu objeto de vínculo arcano: una red de seguridad pequeña pero real.",
+  "La lista arcana es la más amplia del juego en daño, control y utilidad, y escasa en curación. Ese es el intercambio."],
+ rp:[
+  "La magia del mago es académica. Tienes una escuela, un maestro, una tesis y probablemente un rival, y las academias mágicas de Golarion existen justo para esto.",
+  "Contrastas fuentes y miras los problemas por la lente de tu escuela, a veces hasta el punto de tener visión de túnel.",
+  "La gente te encuentra impresionante e inquietante a partes iguales, sin saber si un conjuro es benigno hasta que se resuelve, y da por hecho que puedes resolver por magia cualquier problema mundano, del mal tiempo a una mala cosecha."],
+ dt:"Los magos tratan el tiempo libre como más deberes: aprender conjuros nuevos, fabricar objetos mágicos, transcribir pergaminos para el grupo y perseguir fórmulas interesantes más allá de los propios conjuros. Algunos construyen relaciones académicas duraderas y acaban fundando una escuela o un gremio con su nombre.",
+ yes:"Quieres la caja de herramientas más profunda del juego y disfrutas preparándote para un día que no puedes prever del todo.",
+ no:"Quieres improvisar. Un mago que prepara mal tiene un mal día, y 6 puntos de golpe sin armadura no dejan margen de error.",
+ s:{melee:1,ranged:4,defenses:1,magic:5,support:3,healing:0,skills:3,questing:3,popularity:2,difficulty:5}}
+);
+
+var ICON={
+ melee:'<path d="M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2"/>',
+ ranged:'<path d="M3 13L12.6 3.4M8.6 3.4h4v4M3.2 9.9v3h3"/>',
+ defenses:'<path d="M8 1.9l5.1 2v4.2c0 3.1-3.3 5.3-5.1 6.1-1.8-.8-5.1-3-5.1-6.1V3.9z"/>',
+ magic:'<path d="M8 1.8l1.5 4.7 4.7 1.5-4.7 1.5L8 14.2 6.5 9.5 1.8 8l4.7-1.5z"/>',
+ support:'<path d="M3.6 8.4L8 4l4.4 4.4M3.6 12.8L8 8.4l4.4 4.4"/>',
+ healing:'<path d="M8 2.9v10.2M2.9 8h10.2"/>',
+ skills:'<circle cx="5.6" cy="5.6" r="2.9"/><path d="M7.7 7.7l5.4 5.4M11.1 11.1l-1.5 1.6"/>',
+ questing:'<path d="M8 14.1s4.9-4.3 4.9-7.3a4.9 4.9 0 10-9.8 0c0 3 4.9 7.3 4.9 7.3z"/><circle cx="8" cy="6.6" r="1.7"/>',
+ popularity:'<circle cx="6.2" cy="5.4" r="2.3"/><path d="M2.2 13.3a4 4 0 018 0"/><path d="M11 4.3a2 2 0 010 4M11.4 9.7a3.5 3.5 0 012.9 3.6"/>',
+ difficulty:'<path d="M2.3 13.2h3.4V9.7h3.3V6.2h3.4V2.8"/>'
+};
+function axIcon(k,cls){
+  return '<svg class="'+(cls||"ic")+'" viewBox="0 0 16 16" fill="none" aria-hidden="true" '+
+    'stroke="var(--ax-'+k+')" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+
+    ICON[k]+'</svg>';
+}
+
+/* ---------------- palette for compare columns ---------------- */
+var PALETTE=["#C2402C","#2F6F8F","#6E7F35","#8A5AA8","#B07A1E","#3F8A78","#A8496E","#5C6B9E"];
+
+var ROLES=["Atacante","Defensor","Apoyo","Controlador","Utilidad"];
+var TYPES=["Marcial","Lanzador","Híbrido"];
+
+/* ---------------- state ---------------- */
+var KEY="pf2e-codex-favs-v1";
+var favs=[], state={view:"browse",q:"",roles:[],types:[],sort:"name",current:null};
+
+function loadFavs(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw===null) return ["fighter","bard","kineticist"]; /* starter picks */
+    var v=JSON.parse(raw);
+    return Array.isArray(v)?v.filter(function(id){return CLASSES.some(function(c){return c.id===id})}):[];
+  }catch(e){ return ["fighter","bard","kineticist"]; }
+}
+function saveFavs(){ try{ localStorage.setItem(KEY,JSON.stringify(favs)); }catch(e){} }
+function isFav(id){ return favs.indexOf(id)>-1 }
+function toggleFav(id){
+  var i=favs.indexOf(id);
+  if(i>-1) favs.splice(i,1); else favs.push(id);
+  saveFavs(); renderAll();
+}
+function favColor(id){ return PALETTE[favs.indexOf(id)%PALETTE.length] }
+
+/* ---------------- helpers ---------------- */
+function $(s){ return document.querySelector(s) }
+function el(tag,cls,html){
+  var n=document.createElement(tag);
+  if(cls) n.className=cls;
+  if(html!==undefined) n.innerHTML=html;
+  return n;
+}
+var STAR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.6l6.1-.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+var STARF='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.6l6.1-.8z" fill="currentColor" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+
+function haystack(c){
+  return (c.name+" "+c.type+" "+c.roles.join(" ")+" "+c.tag+" "+c.src+" "+c.key+" "+c.cast+" "+
+    c.en+" "+c.rarity+" "+c.sub+" "+c.mech.join(" ")+" "+c.rp.join(" ")+" "+c.dt+" "+
+    c.yes+" "+c.no).replace(/<[^>]+>/g," ").toLowerCase();
+}
+function visible(){
+  var q=state.q.trim().toLowerCase();
+  var out=CLASSES.filter(function(c){
+    if(state.roles.length && !state.roles.some(function(r){return c.roles.indexOf(r)>-1})) return false;
+    if(state.types.length && state.types.indexOf(c.type)<0) return false;
+    if(q && haystack(c).indexOf(q)<0) return false;
+    return true;
+  });
+  if(state.sort==="name") out.sort(function(a,b){return a.name.localeCompare(b.name)});
+  else{
+    var k=state.sort.slice(2);
+    out.sort(function(a,b){ return b.s[k]-a.s[k] || a.name.localeCompare(b.name) });
+  }
+  return out;
+}
+
+/* ---------------- browse ---------------- */
+function renderChips(){
+  var box=$("#chips"); box.textContent="";
+  TYPES.concat(ROLES).forEach(function(label){
+    var isType=TYPES.indexOf(label)>-1;
+    var arr=isType?state.types:state.roles;
+    var b=el("button","chip",label);
+    b.setAttribute("aria-pressed", arr.indexOf(label)>-1?"true":"false");
+    b.onclick=function(){
+      var i=arr.indexOf(label);
+      if(i>-1) arr.splice(i,1); else arr.push(label);
+      renderChips(); renderList();
+    };
+    box.appendChild(b);
+  });
+}
+function profileFor(c){
+  var wrap=el("div","pf");
+  wrap.setAttribute("role","img");
+  wrap.setAttribute("aria-label","Perfil de "+c.name+": "+
+    AXES.map(function(a){return a.n+" "+c.s[a.k]+" de "+MAX}).join(", "));
+  AXES.forEach(function(a){
+    var row=el("div","c"+(a.kind?" k-"+a.kind:""));
+    row.title=a.n+": "+c.s[a.k]+" de "+MAX+" \u2014 "+a.d;
+    row.innerHTML=axIcon(a.k);
+    row.appendChild(el("span","n",a.n));
+    var b=el("span","b"); var f=document.createElement("i");
+    f.style.width=(c.s[a.k]/MAX*100)+"%";
+    f.style.background="var(--ax-"+a.k+")";
+    b.appendChild(f); row.appendChild(b);
+    row.appendChild(el("span","v",c.s[a.k]+""));
+    wrap.appendChild(row);
+  });
+  return wrap;
+}
+
+function renderList(){
+  var list=$("#list"); list.textContent="";
+  var items=visible();
+  $("#resultN").textContent=items.length+(items.length===1?" mostrada":" mostradas");
+  if(!items.length){
+    list.appendChild(el("div","empty","<strong>Nada coincide</strong>Prueba con otra búsqueda, o quita los filtros de arriba."));
+    return;
+  }
+  items.forEach(function(c){
+    var row=el("div","row");
+    var main=el("div");
+    var nm=el("div","nm"); nm.appendChild(document.createTextNode(c.name));
+    nm.appendChild(el("span","ennm",c.en));
+    nm.appendChild(el("span","badge k",c.type));
+    main.appendChild(nm);
+    main.appendChild(el("div","tl",c.tag));
+    var meta=el("div","meta");
+    c.roles.forEach(function(r){ meta.appendChild(el("span","badge",r)) });
+    main.appendChild(meta);
+    main.appendChild(profileFor(c));
+    var open=el("button","rowopen");
+    open.appendChild(main);
+    open.setAttribute("aria-label","Abrir "+c.name);
+    open.onclick=function(){ openDetail(c.id) };
+    var st=el("button","star",isFav(c.id)?STARF:STAR);
+    st.setAttribute("aria-pressed",isFav(c.id)?"true":"false");
+    st.setAttribute("aria-label",(isFav(c.id)?"Quitar ":"Añadir ")+c.name+(isFav(c.id)?" de favoritas":" a favoritas"));
+    st.onclick=function(ev){ ev.stopPropagation(); toggleFav(c.id) };
+    row.appendChild(open); row.appendChild(st);
+    list.appendChild(row);
+  });
+}
+
+/* ---------------- detail ---------------- */
+function barsFor(c){
+  var wrap=el("div","bars");
+  AXES.forEach(function(a){
+    var b=el("div","bar"+(a.kind?" k-"+a.kind:""));
+    b.innerHTML=axIcon(a.k);
+    b.appendChild(el("span","lb",a.n+(a.kind?"<em>"+(a.kind==="cost"?"coste":"meta")+"</em>":"")));
+    var tk=el("span","tk"); var f=document.createElement("i");
+    f.style.width=(c.s[a.k]/MAX*100)+"%";
+    f.style.background="var(--ax-"+a.k+")";
+    tk.appendChild(f); b.appendChild(tk);
+    b.appendChild(el("span","vl",c.s[a.k]+" / "+MAX));
+    b.title=a.d;
+    wrap.appendChild(b);
+  });
+  return wrap;
+}
+
+function openDetail(id){
+  var c=CLASSES.filter(function(x){return x.id===id})[0];
+  state.current=id;
+  var d=$("#detailBody"); d.textContent="";
+
+  var head=el("div","dhead");
+  var left=el("div");
+  left.appendChild(el("div","src",c.src+" &middot; "+c.type+" &middot; "+c.rarity));
+  var h=el("h2"); h.textContent=c.name; left.appendChild(h);
+  left.appendChild(el("div","enname","En inglés: <b>"+c.en+"</b>"));
+  left.appendChild(el("div","tag",c.tag));
+  head.appendChild(left);
+  var st=el("button","star",isFav(id)?STARF:STAR);
+  st.setAttribute("aria-pressed",isFav(id)?"true":"false");
+  st.setAttribute("aria-label",(isFav(id)?"Quitar ":"Añadir ")+c.name+(isFav(id)?" de favoritas":" a favoritas"));
+  st.onclick=function(){ toggleFav(id); openDetail(id) };
+  head.appendChild(st);
+  d.appendChild(head);
+
+  var sg=el("dl","statgrid");
+  [["Puntos de golpe","%HP% + Con"],["Atributo clave",c.key],["Conjuros",c.cast],
+   ["Armadura",c.armor],["Subclase",c.sub],["Rareza",c.rarity]]
+  .forEach(function(p){
+    var cell=el("div");
+    cell.appendChild(el("dt",null,p[0]));
+    cell.appendChild(el("dd",null,p[1].replace("%HP%",c.hp)));
+    sg.appendChild(cell);
+  });
+  d.appendChild(sg);
+
+  var s1=el("section","sec"); s1.appendChild(el("h3",null,"El motor &mdash; cómo se juega"));
+  var ul=el("ul","bullets");
+  c.mech.forEach(function(m){ ul.appendChild(el("li",null,m)) });
+  s1.appendChild(ul); d.appendChild(s1);
+
+  var s2=el("section","sec"); s2.appendChild(el("h3",null,"En la mesa &mdash; quién eres"));
+  var ul2=el("ul","bullets");
+  c.rp.forEach(function(m){ ul2.appendChild(el("li",null,m)) });
+  s2.appendChild(ul2); d.appendChild(s2);
+
+  var s2b=el("section","sec"); s2b.appendChild(el("h3",null,"Tiempo libre &mdash; entre aventuras"));
+  s2b.appendChild(el("p","dtbody",c.dt));
+  d.appendChild(s2b);
+
+  var v=el("div","verdict");
+  v.appendChild(el("p","yes","<strong>Júgala si</strong>"+c.yes));
+  v.appendChild(el("p","no","<strong>Evítala si</strong>"+c.no));
+  d.appendChild(v);
+
+  var s3=el("section","sec"); s3.appendChild(el("h3",null,"Perfil"));
+  s3.appendChild(barsFor(c));
+  s3.appendChild(el("p","axhelp","Ocho de estos son capacidades, donde más largo es mejor. Los dos últimos no: <b>Dificultad</b> es un coste \u2014 cuánto te exige la clase \u2014 y <b>Popularidad</b> es solo con qué frecuencia se juega. Valoraciones de Classfinder 2e, 0\u20135."));
+  d.appendChild(s3);
+
+  setView("detail");
+  window.scrollTo(0,0);
+}
+
+/* ---------------- compare ---------------- */
+function renderCompare(){
+  var box=$("#cmpBody"); box.textContent="";
+  var picked=favs.map(function(id){
+    return CLASSES.filter(function(c){return c.id===id})[0];
+  }).filter(Boolean);
+
+  if(!picked.length){
+    box.appendChild(el("div","empty",
+      "<strong>Aún no hay favoritas</strong>Toca la estrella junto a cualquier clase para añadirla aquí. Elige dos o más y se colocarán una al lado de otra para compararlas."));
+    return;
+  }
+
+  var intro=el("div","cmp-intro");
+  intro.appendChild(el("p","axhelp",
+    picked.length===1
+      ? "Una clase seleccionada. Marca una segunda para verlas comparadas lado a lado."
+      : picked.length+" clases seleccionadas. Todas las barras usan la misma escala 0&ndash;5; la tabla de abajo se desplaza en horizontal."));
+  box.appendChild(intro);
+
+  var lg=el("div","legend");
+  picked.forEach(function(c){
+    var s=el("span");
+    var i=document.createElement("i"); i.style.background=favColor(c.id);
+    s.appendChild(i); s.appendChild(document.createTextNode(c.name));
+    lg.appendChild(s);
+  });
+  box.appendChild(lg);
+
+  var ab=el("div","axblock");
+  AXES.forEach(function(a){
+    var g=el("div","ax");
+    g.appendChild(el("h4",null,axIcon(a.k)+"<span>"+a.n+"</span>"+
+      (a.kind?"<em>"+(a.kind==="cost"?"coste":"meta")+"</em>":"")));
+    var grp=el("div","grp");
+    picked.forEach(function(c){
+      var r=el("div","g");
+      var t=el("div","gt"); var f=document.createElement("i");
+      f.style.width=(c.s[a.k]/MAX*100)+"%";
+      f.style.background=favColor(c.id);
+      if(a.kind) f.style.opacity=a.kind==="cost"?".42":".7";
+      t.appendChild(f); t.title=c.name+": "+a.n+" "+c.s[a.k]+" de "+MAX;
+      r.appendChild(t);
+      r.appendChild(el("div","gv",c.s[a.k]+""));
+      grp.appendChild(r);
+    });
+    g.appendChild(grp);
+    ab.appendChild(g);
+  });
+  box.appendChild(ab);
+
+  if(picked.length>1) box.appendChild(el("div","scrollhint","La tabla se desplaza &rarr;"));
+
+  var rows=[
+    ["En una frase",function(c){return c.tag},true],
+    ["En inglés",function(c){return c.en}],
+    ["Libro",function(c){return c.src+" &middot; "+c.rarity}],
+    ["Chasis",function(c){return c.type+" &middot; "+c.roles.join(", ")}],
+    ["Puntos de golpe",function(c){return c.hp+" + Con"}],
+    ["Atributo clave",function(c){return c.key}],
+    ["Conjuros",function(c){return c.cast}],
+    ["Armadura",function(c){return c.armor}],
+    ["Subclase",function(c){return c.sub}],
+    ["Rasgo distintivo",function(c){return c.mech[0]}],
+    ["Gancho de rol",function(c){return c.rp[0]}],
+    ["Tiempo libre",function(c){return c.dt},true],
+    ["Júgala si",function(c){return c.yes},true],
+    ["Evítala si",function(c){return c.no}]
+  ];
+  var wrap=el("div","tblwrap");
+  var t=el("table","cmpt");
+  var thead=el("thead"); var htr=el("tr");
+  var corner=el("th",null,"&nbsp;"); htr.appendChild(corner);
+  picked.forEach(function(c){
+    var th=el("th");
+    var sw=el("span","swatch"); sw.style.background=favColor(c.id);
+    th.appendChild(sw); th.appendChild(document.createTextNode(c.name));
+    htr.appendChild(th);
+  });
+  thead.appendChild(htr); t.appendChild(thead);
+  var tb=el("tbody");
+  rows.forEach(function(r){
+    var tr=el("tr");
+    tr.appendChild(el("th",null,r[0]));
+    picked.forEach(function(c){
+      tr.appendChild(el("td",r[2]?"hi":null,r[1](c)));
+    });
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb); wrap.appendChild(t); box.appendChild(wrap);
+}
+
+/* ---------------- views ---------------- */
+function setView(v){
+  state.view=v;
+  $("#viewBrowse").classList.toggle("hidden",v!=="browse");
+  $("#viewDetail").classList.toggle("hidden",v!=="detail");
+  $("#viewCompare").classList.toggle("hidden",v!=="compare");
+  $("#tabBrowse").setAttribute("aria-selected",v!=="compare"?"true":"false");
+  $("#tabCompare").setAttribute("aria-selected",v==="compare"?"true":"false");
+}
+function renderAll(){
+  $("#favCnt").textContent=favs.length?favs.length:"";
+  renderList();
+  renderCompare();
+  if(state.view==="detail"&&state.current) {
+    var st=$("#detailBody .star");
+    if(st){
+      st.innerHTML=isFav(state.current)?STARF:STAR;
+      st.setAttribute("aria-pressed",isFav(state.current)?"true":"false");
+    }
+  }
+}
+
+/* ---------------- init ---------------- */
+favs=loadFavs();
+$("#rosterN").textContent=CLASSES.length+" clases";
+$("#provenance").innerHTML="<b>Sobre las fuentes.</b> Las diez barras son las valoraciones de <a href=\"https://classfinder2e.com/\">Classfinder 2e</a>. Los textos proceden de una guía de campo recopilada a partir de <a href=\"https://2e.aonprd.com/\">los Archivos de Nethys</a>; confirma ahí las reglas concretas antes de cerrar una construcción. Classfinder también valora seis clases de Starfinder 2e, que quedan fuera de este códice. Esta es la edición en español del <i>Pathfinder Class Codex</i>.";
+
+$("#axKey").innerHTML=AXES.map(function(a){
+  return "<span>"+axIcon(a.k)+a.n+"</span>";
+}).join("");
+
+var sel=$("#sort");
+[["name","Nombre A–Z"]].concat(AXES.map(function(a){return ["s:"+a.k,a.n+" (de mayor a menor)"]}))
+ .forEach(function(o){
+   var op=document.createElement("option"); op.value=o[0]; op.textContent=o[1]; sel.appendChild(op);
+ });
+sel.onchange=function(){ state.sort=sel.value; renderList() };
+$("#q").oninput=function(e){ state.q=e.target.value; renderList() };
+$("#tabBrowse").onclick=function(){ setView("browse") };
+$("#tabCompare").onclick=function(){ setView("compare"); window.scrollTo(0,0) };
+$("#back").onclick=function(){ setView("browse") };
+
+renderChips();
+renderAll();
+setView("browse");
+</script>
+<!-- ARTIFACT-BODY-END -->
+</body>
+</html>
